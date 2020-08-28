@@ -17,8 +17,10 @@ class stock_catcher(object):
         """
         input:date(str),example "2020-8-28"
         """
+        if date == None:
+            date = self.date
         stock_list = []
-        st = bs.query_all_stock(self.date)
+        st = bs.query_all_stock(date)
         while(st.error_code == "0") and st.next():
             stock_list.append(st.get_row_data())
         return stock_list,st.fields
