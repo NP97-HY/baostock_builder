@@ -1,18 +1,14 @@
 import baostock as bs
 import pandas
 import time
+from Data_warehouse import data_Warehouse as dw
 
 class baostock_builder(object):
-    def __init__(self):
-        if date == "1":
-            my_time = time.localtime(time.time())
-            month = my_time.tm_mon.zfill(2)
-            day = my_time.tm_mday.zfill(2)
-            self.date = "{}-{}-{}".format(my_time.tm_year,month,day)
+    def __init__(self,stock:str="sh.600333",stocklist:list=None):
+        if stocklist != None:
+            self.dw = dw(stocklist=stocklist)
         else:
-            self.date = date
-        self.frequency = frequency
-        self.adjustflag = adjustflag
+            self.dw = dw(stocknum=stock)
 
 
     def bs_login(self):
