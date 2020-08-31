@@ -1,10 +1,9 @@
 import baostock as bs
-import pandas as pd
 import time
 
 
 class macroeconomic_Data_Warehouse(object):
-    def __init__(self,years:int=10,end_date:str=None):
+    def __init__(self,years:int=5,end_date:str=None):
         lg = bs.login()
         self.my_time = time.localtime(time.time())
         if end_date == None:
@@ -15,7 +14,7 @@ class macroeconomic_Data_Warehouse(object):
             self.end_date = end_date
         self.start_date = "{}-{}-{}".format(self.my_time.tm_year-years,month,day)
 
-    def get_deposit_rate(self,start_date:str=None,end_date:str=None,save=True):
+    def get_deposit_rate(self,start_date:str=None,end_date:str=None,save=False):
         """
         存款利率
         """
@@ -29,10 +28,10 @@ class macroeconomic_Data_Warehouse(object):
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/deposit_rate.csv")
-        return data_saver
+            result.to_csv("../data_home/%s.csv" % targetStock)
+        return data_saver,rs.fields
 
-    def get_loan_rate(self,start_date:str=None,end_date:str=None,save=True):
+    def get_loan_rate(self,start_date:str=None,end_date:str=None,save=False):
         """
         贷款利率
         """
@@ -46,10 +45,10 @@ class macroeconomic_Data_Warehouse(object):
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/loan_rate.csv")
-        return data_saver
+            result.to_csv("../data_home/%s.csv" % targetStock)
+        return data_saver,rs.fields
 
-    def get_required_reserve_ratio_data(self,start_date:str=None,end_date:str=None,yearType="0",save=True):
+    def get_required_reserve_ratio_data(self,start_date:str=None,end_date:str=None,yearType="0",save=False):
         """
         存款准备金率
         """
@@ -63,10 +62,10 @@ class macroeconomic_Data_Warehouse(object):
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/required_reserve_ratio_data.csv")
-        return data_saver
+            result.to_csv("../data_home/%s.csv" % targetStock)
+        return data_saver,rs.fields
 
-    def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
+    def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=False):
         """
         货币供应量
         """
@@ -80,10 +79,10 @@ class macroeconomic_Data_Warehouse(object):
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/money_supply_data.csv")
-        return data_saver
+            result.to_csv("../data_home/%s.csv" % targetStock)
+        return data_saver,rs.fields
 
-    def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
+    def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=False):
         """
         货币供应量(年底余额)
         """
@@ -97,10 +96,10 @@ class macroeconomic_Data_Warehouse(object):
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/money_supply_data.csv")
-        return data_saver
+            result.to_csv("../data_home/%s.csv" % targetStock)
+        return data_saver,rs.fields
 
-    def get_shibor_data(self,start_date:str=None,end_date:str=None,save=True):
+    def get_shibor_data(self,start_date:str=None,end_date:str=None,save=False):
         """
         银行间同业拆放利率
         """
@@ -114,5 +113,5 @@ class macroeconomic_Data_Warehouse(object):
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/shibor_data.csv")
-        return data_saver
+            result.to_csv("../data_home/%s.csv" % targetStock)
+        return data_saver,rs.fields

@@ -11,7 +11,6 @@ class stock_catcher(object):
             self.date = "{}-{}-{}".format(self.my_time.tm_year,month,day)
         else:
             self.date = date
-        bs.login()
 
     def get_all_code(self, date:str=None):
         """

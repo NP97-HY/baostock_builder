@@ -5,6 +5,9 @@ from stock_tools.Data_warehouse import data_Warehouse
 
 class tools(object):
     def __init__(self):
+        lg = bs.login()
+        if lg.error_code != "0":
+            print("LOGIN FAILED:"+lg.error_msg)
         self.sc = stock_catcher()
         self.mdw = macroeconomic_Data_Warehouse()
         self.ic = indexs_component()

@@ -3,12 +3,7 @@ import pandas as pd
 
 
 class indexs_component(object):
-    def __init__(self,):
-        lg = bs.login()
-        if lg.error_code != 0:
-            print("LOGIN FILED:"+lg.error_msg)
-        
-    
+ 
     def get_sz_50_index(self):
         rs = bs.query_sz50_stocks()
         sz50_stocks = []

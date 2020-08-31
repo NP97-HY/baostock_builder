@@ -7,13 +7,7 @@ class data_Warehouse(object):
     """
     get stock daily data
     """
-    def __init__(self):
-        lg = bs.login()
-        if lg.error_code != "0":
-            print("LOGIN FAILED:"+lg.error_msg)
-
-        
-    def get_data(self,date="1",start_date=None,frequency="d",adjustflag="2",stocklist:list=None):
+    def get_data(self,date="1",start_date=None,frequency="d",adjustflag="2",stocklist:list=None,save=False):
         if stocklist == None:
             raise EnvironmentError("no stocklist")
         if date == "1":
@@ -29,10 +23,10 @@ class data_Warehouse(object):
             self.start_date = start_date
         self.frequency = frequency
         self.adjustflag = adjustflag
-        return self._query_history_data_list(stocklist=stocklist)
+        return self._query_history_data_list(stocklist=stocklist,save)
 
 
-    def _query_history_data_list(self,stocklist):
+    def _query_history_data_list(self,stocklist,save):
         """
         get history data for a group stocks
         targetStock : your aim stock,like: ["600001","000002"]
@@ -50,7 +44,10 @@ class data_Warehouse(object):
             while (rs.error_code == "0") & rs.next():
                 datalist.append(rs.get_row_data())
             stock_data_list[targetStock] = datalist
-        return stock_data_list,rs.fields
+            if save == True:
+                result = pd.DataFrame(stock_list, columns=rs.fields)
+                result.to_csv("../data_home/%s.csv" % targetStock)
+        return stock_data_list
 
     
     #def 

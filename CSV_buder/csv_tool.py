@@ -18,6 +18,11 @@ class csv_tool(object):
         result.to_csv("../data_home/%s_all_stock.csv" % self.date)
 
 
-    def stock_data_csv(self,):
-        data,result = self.tools.dw.get_data()
-        data,result = self.tools.
+    def stock_data_csv(self,stocklist):
+        data,result = self.tools.dw.get_data(stocklist=stocklist)
+        for i in stocklist:
+            rs = pd.DataFrame(stock_list, columns=fields)
+            rs.to_csv("../data_home/%s.csv" % i)
+
+
+    def macroeconomic_data_csv(self)
