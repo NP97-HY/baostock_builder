@@ -15,4 +15,9 @@ class csv_tool(object):
     def stocks_csv(self,time:str=None):
         stock_list,fields = self.tools.sc.get_all_code(date = time)
         result = pd.DataFrame(stock_list, columns=fields)
-        result.to_csv("../data_home/.csv")
+        result.to_csv("../data_home/%s_all_stock.csv" % self.date)
+
+
+    def stock_data_csv(self,):
+        data,result = self.tools.dw.get_data()
+        data,result = self.tools.
