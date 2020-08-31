@@ -1,4 +1,3 @@
-import baostock as bs
 import pandas as pd
 import time
 
@@ -7,6 +6,10 @@ class data_Warehouse(object):
     """
     get stock daily data
     """
+    def __init__(self,bs):
+        self.bs = bs
+
+
     def get_data(self,date="1",start_date=None,frequency="d",adjustflag="2",stocklist:list=None,save=False):
         if stocklist == None:
             raise EnvironmentError("no stocklist")
@@ -23,7 +26,7 @@ class data_Warehouse(object):
             self.start_date = start_date
         self.frequency = frequency
         self.adjustflag = adjustflag
-        return self._query_history_data_list(stocklist=stocklist,save)
+        return self._query_history_data_list(stocklist=stocklist,save=save)
 
 
     def _query_history_data_list(self,stocklist,save):
@@ -33,7 +36,7 @@ class data_Warehouse(object):
         """
         stock_data_list = {}
         for targetStock in stocklist:
-            rs = bs.query_history_k_data_plus(targetStock,
+            rs = self.bs.query_history_k_data_plus(targetStock,
                                         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
                                         start_date=self.start_date, end_date=self.date,
                                         frequency=self.frequency, adjustflag=self.adjustflag)
@@ -46,7 +49,7 @@ class data_Warehouse(object):
             stock_data_list[targetStock] = datalist
             if save == True:
                 result = pd.DataFrame(stock_list, columns=rs.fields)
-                result.to_csv("../data_home/%s.csv" % targetStock)
+                result.to_csv("data_home/%s.csv" % targetStock)
         return stock_data_list
 
     

@@ -1,11 +1,10 @@
-import baostock as bs
 import pandas as pd
 import time
 
 
 class macroeconomic_Data_Warehouse(object):
-    def __init__(self,years:int=10,end_date:str=None):
-        lg = bs.login()
+    def __init__(self,bs,years:int=10,end_date:str=None):
+        self.bs = bs
         self.my_time = time.localtime(time.time())
         if end_date == None:
             month = str(self.my_time.tm_mon).zfill(2)
@@ -24,12 +23,12 @@ class macroeconomic_Data_Warehouse(object):
         elif start_day == None:
             start_day = start_date
         data_saver = []
-        rs = bs.query_deposit_rate_data(start_date,end_date)
+        rs = self.bs.query_deposit_rate_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/deposit_rate.csv")
+            result.to_csv("data_home/deposit_rate.csv")
         return data_saver
 
     def get_loan_rate(self,start_date:str=None,end_date:str=None,save=True):
@@ -41,12 +40,12 @@ class macroeconomic_Data_Warehouse(object):
         elif start_day == None:
             start_day = start_date
         data_saver = []
-        rs = bs.query_loan_rate_data(start_date,end_date)
+        rs = self.bs.query_loan_rate_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/loan_rate.csv")
+            result.to_csv("data_home/loan_rate.csv")
         return data_saver
 
     def get_required_reserve_ratio_data(self,start_date:str=None,end_date:str=None,yearType="0",save=True):
@@ -58,12 +57,12 @@ class macroeconomic_Data_Warehouse(object):
         elif start_day == None:
             start_day = start_date
         data_saver = []
-        rs = bs.query_required_reserve_ratio_data(start_date,end_date,yearType)
+        rs = self.bs.query_required_reserve_ratio_data(start_date,end_date,yearType)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/required_reserve_ratio_data.csv")
+            result.to_csv("data_home/required_reserve_ratio_data.csv")
         return data_saver
 
     def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
@@ -75,12 +74,12 @@ class macroeconomic_Data_Warehouse(object):
         elif start_day == None:
             start_day = start_date
         data_saver = []
-        rs = bs.query_money_supply_data_month(start_date,end_date)
+        rs = self.bs.query_money_supply_data_month(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/money_supply_data.csv")
+            result.to_csv("data_home/money_supply_data.csv")
         return data_saver
 
     def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
@@ -92,12 +91,12 @@ class macroeconomic_Data_Warehouse(object):
         elif start_day == None:
             start_day = start_date
         data_saver = []
-        rs = bs.query_money_supply_data_year(start_date,end_date)
+        rs = self.bs.query_money_supply_data_year(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/money_supply_data.csv")
+            result.to_csv("data_home/money_supply_data.csv")
         return data_saver
 
     def get_shibor_data(self,start_date:str=None,end_date:str=None,save=True):
@@ -109,10 +108,10 @@ class macroeconomic_Data_Warehouse(object):
         elif start_day == None:
             start_day = start_date
         data_saver = []
-        rs = bs.query_shibor_data(start_date,end_date)
+        rs = self.bs.query_shibor_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
-            result.to_csv("../data_home/shibor_data.csv")
+            result.to_csv("data_home/shibor_data.csv")
         return data_saver
