@@ -18,12 +18,12 @@ class tools(object):
 
 def get_tools(ty=None):
     if ty == "sc":
-        return stock_catcher()
+        return stock_catcher(bs)
     if ty == "mdw":
-        return macroeconomic_Data_Warehouse()
+        return macroeconomic_Data_Warehouse(bs)
     if ty == "ic":
-        return indexs_component()
+        return indexs_component(bs)
     if ty == "dw":
-        return data_Warehouse()
+        return data_Warehouse(bs)
     if ty == None:
         return tools()

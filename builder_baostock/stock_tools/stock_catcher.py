@@ -24,7 +24,7 @@ class stock_catcher(object):
         if save == True:
             result = pd.DataFrame(stock_list, columns=st.fields)
             result.to_csv("data_home/%s_all_stock.csv" % self.date, encoding="gbk", index=False)
-        return stock_list
+        return result
         
 
     def isTardeDay(self,start_day:str= None,end_day:str=None):

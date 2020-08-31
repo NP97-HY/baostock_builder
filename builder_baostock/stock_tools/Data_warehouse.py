@@ -10,7 +10,7 @@ class data_Warehouse(object):
         self.bs = bs
 
 
-    def get_data(self,date="1",start_date=None,frequency="d",adjustflag="2",stocklist:list=None,save=False):
+    def get_data(self,date="1",start_date:int=5,frequency="d",adjustflag="2",stocklist:list=None,save=False):
         if stocklist == None:
             raise EnvironmentError("no stocklist")
         if date == "1":
@@ -20,10 +20,7 @@ class data_Warehouse(object):
             self.date = "{}-{}-{}".format(self.my_time.tm_year,month,day)
         else:
             self.date = date
-        if start_date == None:
-            self.start_date = "{}-{}-{}".format(self.my_time.tm_year-5,month,day)
-        else:
-            self.start_date = start_date
+        self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date,month,day)
         self.frequency = frequency
         self.adjustflag = adjustflag
         return self._query_history_data_list(stocklist=stocklist,save=save)
@@ -32,7 +29,7 @@ class data_Warehouse(object):
     def _query_history_data_list(self,stocklist,save):
         """
         get history data for a group stocks
-        targetStock : your aim stock,like: ["600001","000002"]
+        targetStock : your aim stock,like: ["sh.600300","sh.601987"]
         """
         stock_data_list = {}
         for targetStock in stocklist:
@@ -46,10 +43,11 @@ class data_Warehouse(object):
             datalist = []
             while (rs.error_code == "0") & rs.next():
                 datalist.append(rs.get_row_data())
-            stock_data_list[targetStock] = datalist
+            result = pd.DataFrame(datalist, columns=rs.fields)
+            stock_data_list[targetStock] = result
             if save == True:
-                result = pd.DataFrame(stock_list, columns=rs.fields)
-                result.to_csv("data_home/%s.csv" % targetStock)
+                re = pd.DataFrame(result, columns=rs.fields)
+                re.to_csv("data_home/%s.csv" % targetStock, encoding="gbk", index=False)
         return stock_data_list
 
     

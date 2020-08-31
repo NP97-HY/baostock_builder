@@ -21,7 +21,7 @@ class macroeconomic_Data_Warehouse(object):
         if end_date == None:
             end_date = self.end_date
         elif start_day == None:
-            start_day = start_date
+            start_day = self.start_date
         data_saver = []
         rs = self.bs.query_deposit_rate_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
@@ -29,7 +29,7 @@ class macroeconomic_Data_Warehouse(object):
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/deposit_rate.csv")
-        return data_saver
+        return result
 
     def get_loan_rate(self,start_date:str=None,end_date:str=None,save=True):
         """
@@ -38,7 +38,7 @@ class macroeconomic_Data_Warehouse(object):
         if end_date == None:
             end_date = self.end_date
         elif start_day == None:
-            start_day = start_date
+            start_day = self.start_date
         data_saver = []
         rs = self.bs.query_loan_rate_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
@@ -46,7 +46,7 @@ class macroeconomic_Data_Warehouse(object):
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/loan_rate.csv")
-        return data_saver
+        return result
 
     def get_required_reserve_ratio_data(self,start_date:str=None,end_date:str=None,yearType="0",save=True):
         """
@@ -55,7 +55,7 @@ class macroeconomic_Data_Warehouse(object):
         if end_date == None:
             end_date = self.end_date
         elif start_day == None:
-            start_day = start_date
+            start_day = self.start_date
         data_saver = []
         rs = self.bs.query_required_reserve_ratio_data(start_date,end_date,yearType)
         while(rs.error_code == "0") and rs.next():
@@ -63,7 +63,7 @@ class macroeconomic_Data_Warehouse(object):
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/required_reserve_ratio_data.csv")
-        return data_saver
+        return result
 
     def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
         """
@@ -72,7 +72,7 @@ class macroeconomic_Data_Warehouse(object):
         if end_date == None:
             end_date = self.end_date
         elif start_day == None:
-            start_day = start_date
+            start_day = self.start_date
         data_saver = []
         rs = self.bs.query_money_supply_data_month(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
@@ -80,7 +80,7 @@ class macroeconomic_Data_Warehouse(object):
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/money_supply_data.csv")
-        return data_saver
+        return result
 
     def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
         """
@@ -89,7 +89,7 @@ class macroeconomic_Data_Warehouse(object):
         if end_date == None:
             end_date = self.end_date
         elif start_day == None:
-            start_day = start_date
+            start_day = self.start_date
         data_saver = []
         rs = self.bs.query_money_supply_data_year(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
@@ -97,7 +97,7 @@ class macroeconomic_Data_Warehouse(object):
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/money_supply_data.csv")
-        return data_saver
+        return result
 
     def get_shibor_data(self,start_date:str=None,end_date:str=None,save=True):
         """
@@ -106,7 +106,7 @@ class macroeconomic_Data_Warehouse(object):
         if end_date == None:
             end_date = self.end_date
         elif start_day == None:
-            start_day = start_date
+            start_day = self.start_date
         data_saver = []
         rs = self.bs.query_shibor_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
@@ -114,4 +114,4 @@ class macroeconomic_Data_Warehouse(object):
         if save == True:
             result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/shibor_data.csv")
-        return data_saver
+        return result
