@@ -2,6 +2,7 @@ from .stock_tools.stock_catcher import stock_catcher
 from .stock_tools.Macroeconomic_data_warehouse import macroeconomic_Data_Warehouse
 from .stock_tools.indexs_component import indexs_component
 from .stock_tools.Data_warehouse import data_Warehouse
+from .stock_tools.Fundamentals_warehouse import fundamentals_warehouse
 import baostock as bs
 
 
@@ -14,6 +15,7 @@ class tools(object):
         self.mdw = macroeconomic_Data_Warehouse(bs)
         self.ic = indexs_component(bs)
         self.dw = data_Warehouse(bs)
+        self.fw = fundamentals_warehouse(bs)
 
 
 def get_tools(ty=None):
@@ -25,5 +27,7 @@ def get_tools(ty=None):
         return indexs_component(bs)
     if ty == "dw":
         return data_Warehouse(bs)
+    if ty == "fw":
+        return fundamentals_warehouse(bs)
     if ty == None:
         return tools()
