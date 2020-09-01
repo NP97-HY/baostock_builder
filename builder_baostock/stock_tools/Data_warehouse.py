@@ -10,7 +10,7 @@ class data_Warehouse(object):
         self.bs = bs
 
 
-    def get_data(self,date="1",start_date:int=5,frequency="d",adjustflag="2",stocklist:list=None,save=False):
+    def get_data(self,date="1",start_date:int=5,frequency="d",adjustflag="2",stocklist=None,save=False):
         if stocklist == None:
             raise EnvironmentError("no stocklist")
         if date == "1":

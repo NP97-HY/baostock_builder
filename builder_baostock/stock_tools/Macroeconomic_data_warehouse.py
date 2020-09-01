@@ -20,7 +20,7 @@ class macroeconomic_Data_Warehouse(object):
         """
         if end_date == None:
             end_date = self.end_date
-        elif start_day == None:
+        if start_day == None:
             start_day = self.start_date
         data_saver = []
         rs = self.bs.query_deposit_rate_data(start_date,end_date)
@@ -37,7 +37,7 @@ class macroeconomic_Data_Warehouse(object):
         """
         if end_date == None:
             end_date = self.end_date
-        elif start_day == None:
+        if start_day == None:
             start_day = self.start_date
         data_saver = []
         rs = self.bs.query_loan_rate_data(start_date,end_date)
@@ -54,7 +54,7 @@ class macroeconomic_Data_Warehouse(object):
         """
         if end_date == None:
             end_date = self.end_date
-        elif start_day == None:
+        if start_day == None:
             start_day = self.start_date
         data_saver = []
         rs = self.bs.query_required_reserve_ratio_data(start_date,end_date,yearType)
@@ -65,13 +65,13 @@ class macroeconomic_Data_Warehouse(object):
             result.to_csv("data_home/required_reserve_ratio_data.csv", encoding="gbk", index=False)
         return result
 
-    def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
+    def get_money_supply_data_month(self,start_date:str=None,end_date:str=None,save=True):
         """
         货币供应量
         """
         if end_date == None:
             end_date = self.end_date
-        elif start_day == None:
+        if start_day == None:
             start_day = self.start_date
         data_saver = []
         rs = self.bs.query_money_supply_data_month(start_date,end_date)
@@ -82,13 +82,13 @@ class macroeconomic_Data_Warehouse(object):
             result.to_csv("data_home/money_supply_data.csv", encoding="gbk", index=False)
         return result
 
-    def get_money_supply_data(self,start_date:str=None,end_date:str=None,save=True):
+    def get_money_supply_data_year(self,start_date:str=None,end_date:str=None,save=True):
         """
         货币供应量(年底余额)
         """
         if end_date == None:
             end_date = self.end_date
-        elif start_day == None:
+        if start_day == None:
             start_day = self.start_date
         data_saver = []
         rs = self.bs.query_money_supply_data_year(start_date,end_date)
@@ -105,7 +105,7 @@ class macroeconomic_Data_Warehouse(object):
         """
         if end_date == None:
             end_date = self.end_date
-        elif start_day == None:
+        if start_day == None:
             start_day = self.start_date
         data_saver = []
         rs = self.bs.query_shibor_data(start_date,end_date)
