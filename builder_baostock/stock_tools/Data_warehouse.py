@@ -45,8 +45,8 @@ class data_Warehouse(object):
                 datalist.append(rs.get_row_data())
             result = pd.DataFrame(datalist, columns=rs.fields)
             stock_data_list[targetStock] = result
+            result = pd.DataFrame(result, columns=rs.fields)
             if save == True:
-                re = pd.DataFrame(result, columns=rs.fields)
                 re.to_csv("data_home/%s.csv" % targetStock, encoding="gbk", index=False)
         return stock_data_list
 

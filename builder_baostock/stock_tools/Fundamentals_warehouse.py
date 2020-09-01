@@ -9,7 +9,7 @@ class fundamentals_warehouse(object):
         self.year = self.my_time.tm_year
 
     
-    def get_profit_data(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_profit_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频盈利能力
         code 	证券代码 	
@@ -32,13 +32,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/profit_data.csv", encoding="gbk", index=False)
         return result
 
 
-    def get_operation_data(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_operation_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频营运能力
         code 	证券代码 	
@@ -59,13 +59,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/operation_data.csv", encoding="gbk", index=False)
         return result
 
 
-    def get_growth_data(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_growth_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频成长能力
         code 	证券代码 	
@@ -85,13 +85,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/growth_data.csv", encoding="gbk", index=False)
         return result
 
 
-    def get_balance_data(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_balance_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频偿债能力
         code 	证券代码 	
@@ -112,13 +112,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/balance_data.csv", encoding="gbk", index=False)
         return result 
 
 
-    def get_cash_flow_data(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_cash_flow_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频现金流量
         code 	证券代码 	
@@ -140,13 +140,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/cash_flow_data.csv", encoding="gbk", index=False)
         return result 
 
 
-    def get_dupont_data(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_dupont_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频杜邦指数
         code 	证券代码 	
@@ -169,13 +169,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/dupont_data.csv", encoding="gbk", index=False)
         return result 
 
 
-    def get_performance_express_report(self,codelist:list=None,year:int=5,quarter:int=None,save=True):
+    def get_performance_express_report(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """
         季频业绩快报
         code 	证券代码
@@ -198,13 +198,13 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") and rs.next():
                         data_saver.append(rs.get_row_data())
         data_saver = [i for i in data_saver if i != '']
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/performance_express_report.csv", encoding="gbk", index=False)
         return result 
 
 
-    def get_forcast_report(self,codelist:list=None,save=True):
+    def get_forcast_report(self,codelist=None,save=True):
         """
         季频业绩预告
         code 	证券代码
@@ -220,7 +220,7 @@ class fundamentals_warehouse(object):
             rs = self.bs.query_forcast_report(code=stockcode)
             while(rs.error_code == "0") and rs.next():
                 data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/forcast_report.csv", encoding="gbk", index=False)
         return result 

@@ -26,8 +26,8 @@ class macroeconomic_Data_Warehouse(object):
         rs = self.bs.query_deposit_rate_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/deposit_rate.csv")
         return result
 
@@ -43,8 +43,8 @@ class macroeconomic_Data_Warehouse(object):
         rs = self.bs.query_loan_rate_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/loan_rate.csv")
         return result
 
@@ -60,8 +60,8 @@ class macroeconomic_Data_Warehouse(object):
         rs = self.bs.query_required_reserve_ratio_data(start_date,end_date,yearType)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/required_reserve_ratio_data.csv", encoding="gbk", index=False)
         return result
 
@@ -77,8 +77,8 @@ class macroeconomic_Data_Warehouse(object):
         rs = self.bs.query_money_supply_data_month(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/money_supply_data.csv", encoding="gbk", index=False)
         return result
 
@@ -94,8 +94,8 @@ class macroeconomic_Data_Warehouse(object):
         rs = self.bs.query_money_supply_data_year(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/money_supply_data.csv", encoding="gbk", index=False)
         return result
 
@@ -111,7 +111,7 @@ class macroeconomic_Data_Warehouse(object):
         rs = self.bs.query_shibor_data(start_date,end_date)
         while(rs.error_code == "0") and rs.next():
             data_saver.append(rs.get_row_data())
+        result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(data_saver, columns=rs.fields)
             result.to_csv("data_home/shibor_data.csv", encoding="gbk", index=False)
         return result

@@ -21,8 +21,8 @@ class stock_catcher(object):
         st = self.bs.query_stock_basic()
         while(st.error_code == "0") and st.next():
             stock_list.append(st.get_row_data())
+        result = pd.DataFrame(stock_list, columns=st.fields)
         if save == True:
-            result = pd.DataFrame(stock_list, columns=st.fields)
             result.to_csv("data_home/%s_all_stock.csv" % self.date, encoding="gbk", index=False)
         return result
         

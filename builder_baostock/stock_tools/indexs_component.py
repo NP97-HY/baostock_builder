@@ -10,8 +10,8 @@ class indexs_component(object):
         sz50_stocks = []
         while (rs.error_code == '0') and rs.next():
             sz50_stocks.append(rs.get_row_data())
+        result = pd.DataFrame(sz50_stocks, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(sz50_stocks, columns=rs.fields)
             result.to_csv("data_home/sz_50.csv", encoding="gbk", index=False)
         return result
 
@@ -21,8 +21,8 @@ class indexs_component(object):
         industry_list = []
         while (rs.error_code == '0') and rs.next():
             industry_list.append(rs.get_row_data())
+        result = pd.DataFrame(industry_list, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(industry_list, columns=rs.fields)
             result.to_csv("data_home/stock_industry.csv", encoding="gbk", index=False)
         return result
 
@@ -32,8 +32,8 @@ class indexs_component(object):
         hs300_stocks = []
         while (rs.error_code == '0') and rs.next():
             hs300_stocks.append(rs.get_row_data())
+        result = pd.DataFrame(hs300_stocks, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(hs300_stocks, columns=rs.fields)
             result.to_csv("data_home/hs_300.csv", encoding="gbk", index=False)
         return result
 
@@ -43,8 +43,8 @@ class indexs_component(object):
         zz500_stocks = []
         while (rs.error_code == '0') and rs.next():
             zz500_stocks.append(rs.get_row_data())
+        result = pd.DataFrame(zz500_stocks, columns=rs.fields)
         if save == True:
-            result = pd.DataFrame(zz500_stocks, columns=rs.fields)
             result.to_csv("data_home/zz_500.csv", encoding="gbk", index=False)
         return result
 
