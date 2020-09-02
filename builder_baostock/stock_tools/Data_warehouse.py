@@ -10,17 +10,16 @@ class data_Warehouse(object):
         self.bs = bs
 
 
-    def get_data(self,date="1",start_date:int=5,frequency="d",adjustflag="2",stocklist=None,save=False):
-        if stocklist == None:
-            raise EnvironmentError("no stocklist")
+    def get_data(self,date="1",start_date_year:int=1,start_date_month:int=0,
+                frequency="d",adjustflag="2",stocklist=None,save=False):
         if date == "1":
             self.my_time = time.localtime(time.time())
-            month = str(self.my_time.tm_mon).zfill(2)
+            month = str(self.my_time.tm_mon-start_date_month).zfill(2)
             day = str(self.my_time.tm_mday).zfill(2)
             self.date = "{}-{}-{}".format(self.my_time.tm_year,month,day)
         else:
             self.date = date
-        self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date,month,day)
+        self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date_year,month,day)
         self.frequency = frequency
         self.adjustflag = adjustflag
         return self._query_history_data_list(stocklist=stocklist,save=save)
@@ -71,6 +70,7 @@ class data_Warehouse(object):
             result['pctChg'] = result['pctChg'].astype(float)
             stock_data_list[targetStock] = result
             result = pd.DataFrame(result, columns=rs.fields)
+            print(targetStock+"  finish")
             if save == True:
                 re.to_csv("data_home/%s.csv" % targetStock, encoding="gbk", index=False)
         return stock_data_list

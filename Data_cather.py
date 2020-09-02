@@ -3,6 +3,7 @@ import pandas as pd
 
 
 class data_catcher(object):
+    
     def __init__(self):
         self.builder = bb.get_tools()
 
@@ -10,10 +11,10 @@ class data_catcher(object):
     def all_stock_code(self):
         code = self.builder.sc.get_all_code()
         return code[code]
-    
 
-    def trade_data_day(self,stockcode):
-        return self.builder.dw.get_data(stocklist=stockcode)
+
+    def trade_data_day(self,stockcode,start_date_year=1,start_date_month=0):
+        return self.builder.dw.get_data(start_date_year=start_date_year,start_date_month=start_date_month,stocklist=stockcode)
         
 
     def sz_50_index(self,save=False):
@@ -59,7 +60,7 @@ class data_catcher(object):
     def performance_express_report(self,codelist=None,save=False):
         return self.builder.fw.get_performance_express_report(codelist=codelist,save=save)
 
-    
+
     def forcast_report(self,codelist=None,save=False):
         return self.builder.fw.get_forcast_report(codelist=codelist,save=save)
 
