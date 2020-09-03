@@ -3,7 +3,7 @@ import time
 
 
 class macroeconomic_Data_Warehouse(object):
-    def __init__(self,bs,years:int=10,end_date:str=None):
+    def __init__(self,bs,ENGINE,years:int=10,end_date:str=None):
         self.bs = bs
         self.my_time = time.localtime(time.time())
         if end_date == None:

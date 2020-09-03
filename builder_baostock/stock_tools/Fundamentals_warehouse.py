@@ -3,7 +3,7 @@ import time
 
 
 class fundamentals_warehouse(object):
-    def __init__(self,bs):
+    def __init__(self,bs,ENGINE):
         self.bs = bs
         self.my_time = time.localtime(time.time())
         self.year = self.my_time.tm_year

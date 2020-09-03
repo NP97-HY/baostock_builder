@@ -3,7 +3,7 @@ import time
 
 
 class stock_catcher(object):
-    def __init__(self,bs,date:str=None):
+    def __init__(self,bs,ENGINE,date:str=None):
         self.bs = bs
         if date == None:
             self.my_time = time.localtime(time.time())

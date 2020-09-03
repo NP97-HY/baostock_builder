@@ -2,7 +2,7 @@ import pandas as pd
 
 
 class indexs_component(object):
-    def __init__(self,bs):
+    def __init__(self,bs,ENGINE):
         self.bs = bs
  
     def get_sz_50_index(self,save=True):
