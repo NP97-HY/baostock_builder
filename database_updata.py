@@ -15,6 +15,8 @@ class database_updata(object):
     def updata_db_all(self):
         stocklist = self.tools.sc.get_all_code().code
         ymd = []
+        targetStock1 = stocklist[int(len(stocklist)/2)+1:]
+        targetStock2 = stocklist[:int(len(stocklist)/2)+1]
         for targetStock in stocklist:
             table_name = targetStock.replace('.','_')
             try:
