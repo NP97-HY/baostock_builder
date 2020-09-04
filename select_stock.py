@@ -1,5 +1,7 @@
 import pandas as pd
 from Data_cather import data_catcher as dc
+from sqlalchemy import create_engine
+from numpy import *
 
 
 class select_stock(object):
@@ -12,15 +14,20 @@ class select_stock(object):
 
     
     def stock_industry(self):
+        engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
         sindustry = self.data.stock_industry()
         industry_index = {}
         for a in range(len(self.industry)):
             sindustry = [i for i in sindustry[sindustry["industry"] == self.industry[a]]["code"]]
             trade_data = self.data.trade_data_day(start_date_year = 1,start_date_month = 0,stockcode=sindustry)
             print(self.industry[a])
+            price_sum = zeros(450)
             for i in sindustry:
-                stock += trade_data[i]
-                index = stock/len(sindustry)
+                table_name = i.replace('.','_')
+                rd = pd.read_sql('select * from %s;' % table_name,con = engine)
+                rd = rd[len(rd)-450:]
+                price_sum = price_sum + rd.close
+            price_mean = price_mean/len(sindustry)
             industry_index[self.industry[a]] = index
         return industry_index
                 

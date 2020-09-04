@@ -3,10 +3,9 @@ import time
 
 
 class macroeconomic_Data_Warehouse(object):
-    def __init__(self,bs,ENGINE,years:int=10,end_date:str=None):
+    def __init__(self,bs,years:int=10,end_date:str=None):
         self.bs = bs
         self.my_time = time.localtime(time.time())
-        self.engine = ENGINE
         if end_date == None:
             month = str(self.my_time.tm_mon).zfill(2)
             day = str(self.my_time.tm_mday).zfill(2)
@@ -15,27 +14,6 @@ class macroeconomic_Data_Warehouse(object):
             self.end_date = end_date
         self.start_date = "{}-{}-{}".format(self.my_time.tm_year-years,month,day)
 
-
-        def _tosql(self,targetStock):
-            ymd = []
-            try:
-                rd = pd.read_sql('select * from %s;' % targetStock,con = self.engine)
-                ymd = rd.date[len(rd)-1].split("-")
-                next_date = datetime.date(int(ymd[0]),int(ymd[1]),int(ymd[2]))
-                tar_date = (datetime.date.today()-next_date).days-1
-                if len(result)-tar_date<0:
-                    raise Exception("数据长度不足")
-            except sqlalchemy.exc.ProgrammingError as e:
-                tar_date = 0
-            filtration_data = result[tar_date:]
-            try:
-                filtration_data.to_sql(name=targetStock,con=self.engine,
-                                    if_exists='append',index=False)
-            except Exception as e:
-                print(targetStock+"保存数据失败")
-            stock_data_list[targetStock] = result
-            result = pd.DataFrame(result, columns=rs.fields)
-            print(targetStock+"  finish")
 
 
     def get_deposit_rate(self,start_date:str=None,end_date:str=None,save=True):

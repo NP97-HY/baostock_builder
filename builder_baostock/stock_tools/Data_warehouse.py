@@ -1,16 +1,14 @@
 import pandas as pd
 import time
-import datetime
-import sqlalchemy
+
 
 
 class data_Warehouse(object):
     """
     get stock daily data
     """
-    def __init__(self,bs,ENGINE):
+    def __init__(self,bs):
         self.bs = bs
-        self.engine = ENGINE
         self.config = {
                         'host': 'localhost',
                         'user': 'debian-sys-maint',
@@ -21,8 +19,8 @@ class data_Warehouse(object):
                         }
 
 
-    def get_data(self,date="1",start_date_year:int=1,start_date_month:int=0,
-                frequency="d",adjustflag="2",stocklist=None,save=False,tosql=False):
+    def get_data(self,date="1",start_date:str=None,start_date_year:int=2,start_date_month:int=0,
+                frequency="d",adjustflag="2",stocklist=None,save=False):
         if date == "1":
             self.my_time = time.localtime(time.time())
             month = str(self.my_time.tm_mon-start_date_month).zfill(2)
@@ -30,13 +28,16 @@ class data_Warehouse(object):
             self.date = "{}-{}-{}".format(self.my_time.tm_year,month,day)
         else:
             self.date = date
-        self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date_year,month,day)
+        if start_date == None:
+            self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date_year,month,day)
+        else:
+            self.start_date = start_date
         self.frequency = frequency
         self.adjustflag = adjustflag
-        return self._query_history_data_list(stocklist=stocklist,save=save,tosql=tosql)
+        return self._query_history_data_list(stocklist=stocklist,save=save)
 
 
-    def _query_history_data_list(self,stocklist,save,tosql):
+    def _query_history_data_list(self,stocklist,save):
         """
         get history data for a group stocks
         targetStock : your aim stock,like: ["sh.600300","sh.601987"]
@@ -62,7 +63,6 @@ class data_Warehouse(object):
             #     try:
             #         rd = pd.read_sql('select * from %s;' % targetStock,con = self.engine)
             #     except sqlalchemy.exc.ProgrammingError as e:
-
             rs = self.bs.query_history_k_data_plus(targetStock,
                                         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
                                         start_date=self.start_date, end_date=self.date,
@@ -84,27 +84,6 @@ class data_Warehouse(object):
             result['amount'] = result['amount'].astype(float)
             result['turn'] = result['turn'].astype(float)
             result['pctChg'] = result['pctChg'].astype(float)
-            """
-            是否保存至数据库
-            """
-            if tosql == True:
-                ymd = []
-                table_name = targetStock.replace('.','_')
-                try:
-                    rd = pd.read_sql('select * from %s;' % table_name,con = self.engine)
-                    ymd = rd.date[len(rd)-1].split("-")
-                    next_date = datetime.date(int(ymd[0]),int(ymd[1]),int(ymd[2]))
-                    tar_date = (datetime.date.today()-next_date).days-1
-                    if len(result)-tar_date<0:
-                        raise Exception("数据长度不足")
-                except sqlalchemy.exc.ProgrammingError as e:
-                    tar_date = 0
-                filtration_data = result[tar_date:]
-                try:
-                    filtration_data.to_sql(name=table_name,con=self.engine,
-                                        if_exists='append',index=False)
-                except Exception as e:
-                    print(targetStock+"保存数据失败")
             stock_data_list[targetStock] = result
             result = pd.DataFrame(result, columns=rs.fields)
             print(targetStock+"  finish")
