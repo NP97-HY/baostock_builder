@@ -4,6 +4,29 @@ import pandas as pd
 class indexs_component(object):
     def __init__(self,bs,ENGINE):
         self.bs = bs
+
+
+    def _tosql(self,targetStock):
+            ymd = []
+            try:
+                rd = pd.read_sql('select * from %s;' % targetStock,con = self.engine)
+                ymd = rd.date[len(rd)-1].split("-")
+                next_date = datetime.date(int(ymd[0]),int(ymd[1]),int(ymd[2]))
+                tar_date = (datetime.date.today()-next_date).days-1
+                if len(result)-tar_date<0:
+                    raise Exception("数据长度不足")
+            except sqlalchemy.exc.ProgrammingError as e:
+                tar_date = 0
+            filtration_data = result[tar_date:]
+            try:
+                filtration_data.to_sql(name=targetStock,con=self.engine,
+                                    if_exists='append',index=False)
+            except Exception as e:
+                print(targetStock+"保存数据失败")
+            stock_data_list[targetStock] = result
+            result = pd.DataFrame(result, columns=rs.fields)
+            print(targetStock+"  finish")
+            
  
     def get_sz_50_index(self,save=True):
         rs = self.bs.query_sz50_stocks()

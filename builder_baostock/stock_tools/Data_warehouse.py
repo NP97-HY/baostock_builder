@@ -21,7 +21,7 @@ class data_Warehouse(object):
                         }
 
 
-    def get_data(self,date="1",start_date_year:int=5,start_date_month:int=0,
+    def get_data(self,date="1",start_date_year:int=1,start_date_month:int=0,
                 frequency="d",adjustflag="2",stocklist=None,save=False,tosql=False):
         if date == "1":
             self.my_time = time.localtime(time.time())
@@ -58,6 +58,11 @@ class data_Warehouse(object):
         """
         stock_data_list = {}
         for targetStock in stocklist:
+            # if tosql:
+            #     try:
+            #         rd = pd.read_sql('select * from %s;' % targetStock,con = self.engine)
+            #     except sqlalchemy.exc.ProgrammingError as e:
+
             rs = self.bs.query_history_k_data_plus(targetStock,
                                         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
                                         start_date=self.start_date, end_date=self.date,
@@ -84,8 +89,9 @@ class data_Warehouse(object):
             """
             if tosql == True:
                 ymd = []
+                table_name = targetStock.replace('.','_')
                 try:
-                    rd = pd.read_sql('select * from %s;' % targetStock,con = self.engine)
+                    rd = pd.read_sql('select * from %s;' % table_name,con = self.engine)
                     ymd = rd.date[len(rd)-1].split("-")
                     next_date = datetime.date(int(ymd[0]),int(ymd[1]),int(ymd[2]))
                     tar_date = (datetime.date.today()-next_date).days-1
@@ -95,7 +101,7 @@ class data_Warehouse(object):
                     tar_date = 0
                 filtration_data = result[tar_date:]
                 try:
-                    filtration_data.to_sql(name=targetStock,con=self.engine,
+                    filtration_data.to_sql(name=table_name,con=self.engine,
                                         if_exists='append',index=False)
                 except Exception as e:
                     print(targetStock+"保存数据失败")

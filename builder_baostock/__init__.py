@@ -12,7 +12,7 @@ class tools(object):
         lg = bs.login()
         if lg.error_code != "0":
             print("LOGIN FAILED:"+lg.error_msg)
-        ENGINE=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
+        ENGINE=create_engine("mysql://root:1qaz!QAZ@localhost:3306/test1?charset=utf8", max_overflow=5)
         self.sc = stock_catcher(bs,ENGINE)
         self.mdw = macroeconomic_Data_Warehouse(bs,ENGINE)
         self.ic = indexs_component(bs,ENGINE)
@@ -22,14 +22,14 @@ class tools(object):
 
 def get_tools(ty=None):
     if ty == "sc":
-        return stock_catcher(bs)
+        return stock_catcher(bs,create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5))
     if ty == "mdw":
-        return macroeconomic_Data_Warehouse(bs)
+        return macroeconomic_Data_Warehouse(bs,create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5))
     if ty == "ic":
-        return indexs_component(bs)
+        return indexs_component(bs,create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5))
     if ty == "dw":
-        return data_Warehouse(bs)
+        return data_Warehouse(bs,create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5))
     if ty == "fw":
-        return fundamentals_warehouse(bs)
+        return fundamentals_warehouse(bs,create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5))
     if ty == None:
         return tools()
