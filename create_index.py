@@ -32,23 +32,28 @@ class create_index(object):
                     # for r in range(480):
                     price_sum[i] += array(rd[len(rd)-480:]/len(idsy))
             price_mean = sum(price_sum,axis=0)
-            # price_mean = price_sum/len(idsy)
             industry_index[self.industry[a]] = price_mean
         return industry_index
         
 
     def stock_mean_index(self,index):
-        if index == hs_300:
-            stocklist = dc.hs_300_index()
-        elif index == sz_50:
-            stocklist = dc.sz_50_index()
-        elif index == zz_500:
-            stocklist = dc.zz_500_index()
+        if index == 'hs_300':
+            stocklist = self.data.hs_300_index()
+        elif index == 'sz_50':
+            stocklist = self.data.sz_50_index()
+        elif index == 'zz_500':
+            stocklist = self.data.zz_500_index()
         else:
-            stocklist = dc.all_stock_code()
-        for i in stocklist:
-            table_name = i.replace('.','_')
-            rd = pd.read_sql('select * from %s;' % table_name,con = engine)
-            rd = rd[len(rd)-480:]
-            price_sum = price_sum + rd.close
-        return price_sum/len(sindustry)
+            stocklist = self.data.all_stock_code()
+        engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
+        stocklist = stocklist.code
+        price_sum = zeros([len(stocklist),60])
+        for i in range(len(stocklist)):
+            table_name = stocklist[i].replace('.','_')
+            rd = pd.read_sql('select * from %s;' % table_name,con = engine).close
+            if len(rd)<60:
+                price_sum[i,60-len(rd):] = array(rd/len(stocklist))
+            else:
+                price_sum[i] += array(rd[len(rd)-60:]/len(stocklist))
+        price_mean = sum(price_sum,axis=0)
+        return price_mean
