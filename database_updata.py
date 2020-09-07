@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, date, timedelta
 import sqlalchemy
+import threading
 
 
 class database_updata(object):
@@ -12,11 +13,16 @@ class database_updata(object):
         self.engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
 
 
-    def updata_db_all(self):
+    def update_db_all(self):
         stocklist = self.tools.sc.get_all_code().code
-        ymd = []
         targetStock1 = stocklist[int(len(stocklist)/2)+1:]
         targetStock2 = stocklist[:int(len(stocklist)/2)+1]
+        mthread = threading.Thread(target=_updata,args=(stocklist1))
+        mthread = threading.Thread(target=_updata,args=(stocklist2))
+
+
+    def _updata(self,stocklist):
+        ymd = []
         for targetStock in stocklist:
             table_name = targetStock.replace('.','_')
             try:
@@ -32,4 +38,4 @@ class database_updata(object):
                 result[targetStock].to_sql(name=table_name,con=self.engine,
                                     if_exists='append',index=False)
             except Exception as e:
-                print(targetStock+"保存数据失败")
+                print(targetStock+"保存数据失败") 
