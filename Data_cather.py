@@ -65,25 +65,25 @@ class data_catcher(object):
         return self.builder.fw.get_forcast_report(codelist=codelist,save=save)
 
 
-    def shibor_data(self,start_date:str=None,end_date:str=None,save=False):
-        return self.builder.md.get_shibor_data(start_date=start_date,end_date=end_date,save=save)
+    def shibor_data(self,start_date=None,end_date=None,save=False):
+        return self.builder.mdw.get_shibor_data(start_date=start_date,end_date=end_date,save=save)
 
 
-    def money_supply_data_year(self,start_date:str=None,end_date:str=None,save=False):
-        return self.builder.md.get_money_supply_data_year(start_date=start_date,end_date=end_date,save=save)
+    def money_supply_data_year(self,start_date=None,end_date=None,save=False):
+        return self.builder.mdw.get_money_supply_data_year(start_date=start_date,end_date=end_date,save=save)
 
 
-    def money_supply_data_month(self,start_date:str=None,end_date:str=None,save=False):
-        return self.builder.md.get_money_supply_data_month(start_date=start_date,end_date=end_date,save=save)
+    def money_supply_data_month(self,start_date=None,end_date=None,save=False):
+        return self.builder.mdw.get_money_supply_data_month(start_date=start_date,end_date=end_date,save=save)
 
 
-    def required_reserve_ratio_data(self,start_date:str=None,end_date:str=None,save=False):
-        return self.builder.md.get_required_reserve_ratio_data(start_date=start_date,end_date=end_date,save=save)
+    def required_reserve_ratio_data(self,start_date=None,end_date=None,save=False):
+        return self.builder.mdw.get_required_reserve_ratio_data(start_date=start_date,end_date=end_date,save=save)
 
 
-    def loan_rate(self,start_date:str=None,end_date:str=None,save=False):
-        return self.builder.md.get_loan_rate(start_date=start_date,end_date=end_date,save=save)
+    def loan_rate(self,start_date=None,end_date=None,save=False):
+        return self.builder.mdw.get_loan_rate(start_date=start_date,end_date=end_date,save=save)
 
 
-    def deposit_rate(self,start_date:str=None,end_date:str=None,save=False):
-        return self.builder.md.get_deposit_rate(start_date=start_date,end_date=end_date,save=save)
+    def deposit_rate(self,start_date=None,end_date=None,save=False):
+        return self.builder.mdw.get_deposit_rate(start_date=start_date,end_date=end_date,save=save)
