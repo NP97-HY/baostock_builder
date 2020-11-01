@@ -4,6 +4,8 @@ import pandas as pd
 class indexs_component(object):
     def __init__(self,bs):
         self.bs = bs
+
+
  
     def get_sz_50_index(self,save=True):
         rs = self.bs.query_sz50_stocks()

@@ -8,6 +8,7 @@ class fundamentals_warehouse(object):
         self.my_time = time.localtime(time.time())
         self.year = self.my_time.tm_year
 
+
     
     def get_profit_data(self,codelist=None,year:int=5,quarter:int=None,save=True):
         """

@@ -2,15 +2,24 @@ import pandas as pd
 import time
 
 
+
 class data_Warehouse(object):
     """
     get stock daily data
     """
     def __init__(self,bs):
         self.bs = bs
+        self.config = {
+                        'host': 'localhost',
+                        'user': 'debian-sys-maint',
+                        'password': '9nzslBkh8CL6uKar',
+                        'port': 3306,
+                        'charset': 'utf8',
+                        'database': 'stock'
+                        }
 
 
-    def get_data(self,date="1",start_date_year:int=1,start_date_month:int=0,
+    def get_data(self,date="1",start_date:str=None,start_date_year:int=2,start_date_month:int=0,
                 frequency="d",adjustflag="2",stocklist=None,save=False):
         if date == "1":
             self.my_time = time.localtime(time.time())
@@ -19,7 +28,10 @@ class data_Warehouse(object):
             self.date = "{}-{}-{}".format(self.my_time.tm_year,month,day)
         else:
             self.date = date
-        self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date_year,month,day)
+        if start_date == None:
+            self.start_date = "{}-{}-{}".format(self.my_time.tm_year-start_date_year,month,day)
+        else:
+            self.start_date = start_date
         self.frequency = frequency
         self.adjustflag = adjustflag
         return self._query_history_data_list(stocklist=stocklist,save=save)
@@ -47,6 +59,10 @@ class data_Warehouse(object):
         """
         stock_data_list = {}
         for targetStock in stocklist:
+            # if tosql:
+            #     try:
+            #         rd = pd.read_sql('select * from %s;' % targetStock,con = self.engine)
+            #     except sqlalchemy.exc.ProgrammingError as e:
             rs = self.bs.query_history_k_data_plus(targetStock,
                                         "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
                                         start_date=self.start_date, end_date=self.date,
@@ -72,7 +88,7 @@ class data_Warehouse(object):
             result = pd.DataFrame(result, columns=rs.fields)
             print(targetStock+"  finish")
             if save == True:
-                re.to_csv("data_home/%s.csv" % targetStock, encoding="gbk", index=False)
+                result.to_csv("data_home/%s.csv" % targetStock, encoding="gbk", index=False)
         return stock_data_list
 
     
