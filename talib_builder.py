@@ -10,15 +10,16 @@ import sqlalchemy
 
 
 class talib_builder(object):
-    def __init__(self):
+    def __init__(self,stocklist:list):
         self.tools = bb.get_tools()
+        self.stocklist = stocklist
         pymysql.install_as_MySQLdb()
         self.engine_daily=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
         self.engine_MACD=create_engine("mysql://root:1qaz!QAZ@localhost:3306/MACD?charset=utf8", max_overflow=5)
 
 
     def MACD_build(self):
-        stocklist = self.tools.sc.get_all_code().code
+        stocklist = self.stocklist
         for targetStock in stocklist:
             macd = pd.DataFrame()
             table_name = targetStock.replace('.','_')
@@ -31,9 +32,9 @@ class talib_builder(object):
             try:
                 md = pd.read_sql('select * from %s;' % table_name,con = self.engine_MACD)
                 if datetime.strptime(md.date[len(md)-1],'%Y-%m-%d').date() < datetime.strptime(rd.date[len(rd)-1],'%Y-%m-%d').date():
-                    item = (datetime.strptime(rd.date[len(rd)-1],'%Y-%m-%d').date() - datetime.strptime(md.date[len(md)-1],'%Y-%m-%d').date()).days
-                    macd['date']=rd.date[len(rd)-item-1:]
-                    macd['code']=rd.code[len(rd)-item-1:]
+                    item = len(rd) - len(md)
+                    macd['date']=rd.date[len(rd)-item:]
+                    macd['code']=rd.code[len(rd)-item:]
                     macd['EMA12']=md.EMA12[len(md)-1]*11/13+rd.close[len(md)-1]*2/13
                     macd['EMA26']=md.EMA12[len(md)-1]*25/27+rd.close[len(md)-1]*2/27
                     macd['DIFF']=macd['EMA12']-macd['EMA26']
@@ -43,9 +44,9 @@ class talib_builder(object):
                     while item>1:
                         macd['EMA12'][len(macd.date)-item+1]=macd['EMA12'][len(macd.date)-item]*11/13+rd.close[len(rd)-item+1]*2/13
                         macd['EMA26'][len(macd.date)-item+1]=macd['EMA26'][len(macd.date)-item]*11/13+rd.close[len(rd)-item+1]*2/13
-                        macd['DIFF'][len(macd.date)-item+1]=macd['EMA12'][len(macd.date)-item]-macd['EMA26'][len(macd.date)-item]
-                        macd['DEA'][len(macd.date)-item+1]=macd['DEA'][len(macd.date)-item]*0.8-macd['DIFF'][len(macd.date)-item]*0.2
-                        macd['MACD'][len(macd.date)-item+1]=(macd['DIFF'][len(macd.date)-item]-macd['DEA'][len(macd.date)-item])*2
+                        macd['DIFF'][len(macd.date)-item+1]=macd['EMA12'][len(macd.date)-item+1]-macd['EMA26'][len(macd.date)-item+1]
+                        macd['DEA'][len(macd.date)-item+1]=macd['DEA'][len(macd.date)-item+1]*0.8-macd['DIFF'][len(macd.date)-item+1]*0.2
+                        macd['MACD'][len(macd.date)-item+1]=(macd['DIFF'][len(macd.date)-item+1]-macd['DEA'][len(macd.date)-item+1])*2
                         item -= 1
                 else:
                     print(targetStock+"已是最新日期")
@@ -61,6 +62,6 @@ class talib_builder(object):
             try:
                 macd.to_sql(name=table_name,con=self.engine_MACD,
                                             if_exists='append',index=False)
-                print(targetStock+"建表完成")
+                print(targetStock+"数据保存成功")
             except Exception as e:
                 print(targetStock+"保存数据失败") 

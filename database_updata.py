@@ -8,14 +8,15 @@ import pymysql
     
 
 class database_updata(object):
-    def __init__(self):
+    def __init__(self,stocklist):
         self.tools = bb.get_tools()
+        self.stocklist = stocklist
         pymysql.install_as_MySQLdb()
         self.engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
 
 
     def updata_db_all(self):
-        stocklist = self.tools.sc.get_all_code().code
+        stocklist = self.stocklist
         ymd = []
         for targetStock in stocklist:
             table_name = targetStock.replace('.','_')
