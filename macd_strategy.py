@@ -1,9 +1,7 @@
 import pandas as pd
 import builder_baostock as bb
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from DB_HOME import DB_stock,DB_MACD
 import numpy as np
-import pymysql
 import talib
 from datetime import datetime, date, timedelta
 import sqlalchemy
@@ -12,9 +10,8 @@ import sqlalchemy
 class macd_strategy(object):
     def __init__(self):
         self.tools = bb.get_tools()
-        pymysql.install_as_MySQLdb()
-        self.engine_daily=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
-        self.engine_MACD=create_engine("mysql://root:1qaz!QAZ@localhost:3306/MACD?charset=utf8", max_overflow=5)
+        self.engine_daily=DB_stock
+        self.engine_MACD=DB_MACD
 
 
     def macd_double(self):

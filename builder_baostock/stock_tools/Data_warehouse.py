@@ -9,14 +9,6 @@ class data_Warehouse(object):
     """
     def __init__(self,bs):
         self.bs = bs
-        self.config = {
-                        'host': 'localhost',
-                        'user': 'debian-sys-maint',
-                        'password': '9nzslBkh8CL6uKar',
-                        'port': 3306,
-                        'charset': 'utf8',
-                        'database': 'stock'
-                        }
 
 
     def get_data(self,date="1",start_date:str=None,start_date_year:int=2,start_date_month:int=0,

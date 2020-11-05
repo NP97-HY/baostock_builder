@@ -2,6 +2,7 @@ import pandas as pd
 from Data_cather import data_catcher as dc
 from sqlalchemy import create_engine
 from numpy import *
+from DB_HOME import DB_stock
 import matplotlib.pyplot as plt
 import matplotlib
 
@@ -16,7 +17,7 @@ class create_index(object):
 
     
     def stock_industry(self,my_industry:list=None):
-        engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
+        engine=DB_stock
         sindustry = self.data.stock_industry()
         if my_industry != None:
             test_industry = my_industry
@@ -56,7 +57,7 @@ class create_index(object):
             stocklist = self.data.zz_500_index()
         else:
             stocklist = self.data.all_stock_code()
-        engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
+        engine=DB_stock
         stocklist = stocklist.code
         price_sum = zeros([len(stocklist),400])
         for i in range(len(stocklist)):

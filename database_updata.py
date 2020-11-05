@@ -1,18 +1,15 @@
 import builder_baostock as bb
 import pandas as pd
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from DB_HOME import DB_stock
 from datetime import datetime, date, timedelta
 import sqlalchemy
-import pymysql
     
 
 class database_updata(object):
     def __init__(self,stocklist):
         self.tools = bb.get_tools()
         self.stocklist = stocklist
-        pymysql.install_as_MySQLdb()
-        self.engine=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
+        self.engine=DB_stock
 
 
     def updata_db_all(self):

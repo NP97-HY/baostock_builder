@@ -1,9 +1,7 @@
 import pandas as pd
 import builder_baostock as bb
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import numpy as np
-import pymysql
+from DB_HOME import DB_stock,DB_MACD
 import talib
 from datetime import datetime, date, timedelta
 import sqlalchemy
@@ -13,9 +11,8 @@ class talib_builder(object):
     def __init__(self,stocklist:list):
         self.tools = bb.get_tools()
         self.stocklist = stocklist
-        pymysql.install_as_MySQLdb()
-        self.engine_daily=create_engine("mysql://root:1qaz!QAZ@localhost:3306/stock?charset=utf8", max_overflow=5)
-        self.engine_MACD=create_engine("mysql://root:1qaz!QAZ@localhost:3306/MACD?charset=utf8", max_overflow=5)
+        self.engine_daily=DB_stock
+        self.engine_MACD=DB_MACD
 
 
     def MACD_build(self):
