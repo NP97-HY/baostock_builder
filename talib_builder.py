@@ -33,7 +33,7 @@ class talib_builder(object):
                 continue
             try:
                 rd = pd.read_sql('select * from %s;' % table_name,con = engine_X)
-            except sqlalchemy.exc.ProgrammingError as e:
+            except sqlalchemy.exc.ProgrammingError:
                 continue
             if len(rd)<50:
                 continue
@@ -70,5 +70,5 @@ class talib_builder(object):
                 macd.to_sql(name=table_name,con=self.engine_MACD,
                                             if_exists='append',index=False)
                 print(stocklist[num]+"数据保存成功")
-            except Exception as e:
+            except Exception:
                 print(stocklist[num]+"保存数据失败") 

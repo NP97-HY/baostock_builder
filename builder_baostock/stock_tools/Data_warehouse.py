@@ -74,7 +74,7 @@ class data_Warehouse(object):
             result['preclose'] = result['preclose'].astype(float)
             try:
                 result['volume'] = result['volume'].astype(float)
-            except Exception as e:
+            except Exception:
                 return False
             result['amount'] = result['amount'].astype(float)
             result['turn'] = result['turn'].astype(float)

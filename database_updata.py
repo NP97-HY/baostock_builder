@@ -49,7 +49,7 @@ class database_updata(object):
                 else:
                     print(codelist[num]+"无数据")
                     raise sqlalchemy.exc.ProgrammingError(statement=1, params=1, orig=1)
-            except sqlalchemy.exc.ProgrammingError as e:
+            except sqlalchemy.exc.ProgrammingError:
                 result = self.tools.dw.get_data(start_date="2017-09-04",start_date_year=0,
                                 frequency="d",adjustflag="2",stocklist=[codelist[num]])
             try:
@@ -58,5 +58,5 @@ class database_updata(object):
                     continue
                 result[codelist[num]].to_sql(name=table_name,con=engine_X,
                                            if_exists='append',index=False)
-            except Exception as e:
+            except Exception:
                 print(codelist[num]+"保存数据失败") 

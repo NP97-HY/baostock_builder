@@ -29,7 +29,7 @@ class macd(object):
                 continue
             try:
                 md = pd.read_sql('select * from %s order by date desc limit 15;' % table_name,con = self.engine_MACD)
-            except Exception as e:
+            except Exception:
                 continue
             num = 0
             if md.MACD[0]== None:
