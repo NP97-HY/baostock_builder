@@ -1,13 +1,14 @@
 import pandas as pd
 import builder_baostock as bb
-from DB_HOME import DB_stock,DB_MACD
+from DB_HOME import DB_stock,DB_MACD,DB_stock_index
 import numpy as np
 import talib
 from datetime import datetime, date, timedelta
 import sqlalchemy
+import sys
 
 
-class macd_strategy(object):
+class macd(object):
     def __init__(self):
         self.tools = bb.get_tools()
         self.engine_daily=DB_stock
@@ -15,10 +16,17 @@ class macd_strategy(object):
 
 
     def macd_double(self):
-        stocklist = self.tools.sc.get_all_code().code
+        stocklist = self.tools.sc.get_all_code()
         stock_pool = pd.DataFrame()
-        for targetStock in stocklist:
-            table_name = targetStock.replace('.','_')
+        for crl in range(len(stocklist.code)):
+            table_name = stocklist.code[crl].replace('.','_')
+            if stocklist.type[crl] == '1':
+                self.engine_daily = DB_stock
+            elif stocklist.type[crl] == '2':
+                self.engine_daily = DB_stock_index
+            elif stocklist.type[crl] == '3':
+                print(table_name+"type=3")
+                continue
             try:
                 md = pd.read_sql('select * from %s order by date desc limit 15;' % table_name,con = self.engine_MACD)
             except Exception as e:
@@ -37,7 +45,8 @@ class macd_strategy(object):
                         end_close = rd.close[0]
                         last_date=datetime.strptime(md.date[i+1],'%Y-%m-%d').date()
                         #print(last_date)
-            if num>=2 and (date.today()-last_date).days<=15 and ((first_close-end_close)/first_close).astype('float')<0.05: #
-                stock_pool[targetStock] = targetStock
-                print(targetStock+'符合条件')
+            if num>=2 and (date.today()-last_date).days<=10 and ((first_close-end_close)/first_close).astype('float')<0.05: #
+                stock_pool[stocklist.code[crl]] = stocklist.code[crl]
+                if stocklist.type[crl] == '1':
+                    print(stocklist.code[crl]+'符合条件')
         stock_pool.to_csv("data_home/%s_macd_double.csv" % str(datetime.now().date()))

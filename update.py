@@ -3,18 +3,18 @@ from talib_builder import talib_builder as tb
 from multiprocessing import Process
 import builder_baostock as bb
 
-def db_updata(stock_list:list):
-    dbu = du(stock_list)
+def db_updata(stock_list):
+    dbu = du(stock_list.code,stock_list.type)
     dbu.updata_db_all()
 
 
-def tb_updata(stock_list:list):
-    tbu = tb(stock_list)
+def tb_updata(stock_list):
+    tbu = tb(stock_list.code,stock_list.type)
     tbu.MACD_build()
 
 
 class Run(Process):
-    def __init__(self,stock_list:list):
+    def __init__(self,stock_list):
         super().__init__()
         self.stock_list=stock_list
 
@@ -28,11 +28,17 @@ class Run(Process):
 
 if __name__ == "__main__":
     my_crl = bb.get_tools()
-    code_pool = my_crl.sc.get_all_code().code
+    code_pool = my_crl.sc.get_all_code()
     half = len(code_pool)/2
-    stocklist_1 = code_pool[:int(half)]
-    stocklist_2 = code_pool[int(half)+1:]
+    stocklist_1 = code_pool[:int(half/2)]
+    stocklist_2 = code_pool[int(half/2)+1:int(half)]
+    stocklist_3 = code_pool[int(half)+1:int(half*3/2)]
+    stocklist_4 = code_pool[int(half*3/2):]
     p1 = Run(stocklist_1)
     p2 = Run(stocklist_2)
+    p3 = Run(stocklist_3)
+    p4 = Run(stocklist_4)
     p1.start()
     p2.start()
+    p3.start()
+    p4.start()

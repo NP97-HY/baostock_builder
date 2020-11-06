@@ -72,7 +72,10 @@ class data_Warehouse(object):
             result['low'] = result['low'].astype(float)
             result['close'] = result['close'].astype(float)
             result['preclose'] = result['preclose'].astype(float)
-            result['volume'] = result['volume'].astype(float)
+            try:
+                result['volume'] = result['volume'].astype(float)
+            except Exception as e:
+                return False
             result['amount'] = result['amount'].astype(float)
             result['turn'] = result['turn'].astype(float)
             result['pctChg'] = result['pctChg'].astype(float)
