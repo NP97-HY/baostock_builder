@@ -9,14 +9,6 @@ class data_Warehouse(object):
     """
     def __init__(self,bs):
         self.bs = bs
-        self.config = {
-                        'host': 'localhost',
-                        'user': 'debian-sys-maint',
-                        'password': '9nzslBkh8CL6uKar',
-                        'port': 3306,
-                        'charset': 'utf8',
-                        'database': 'stock'
-                        }
 
 
     def get_data(self,date="1",start_date:str=None,start_date_year:int=2,start_date_month:int=0,
@@ -80,7 +72,10 @@ class data_Warehouse(object):
             result['low'] = result['low'].astype(float)
             result['close'] = result['close'].astype(float)
             result['preclose'] = result['preclose'].astype(float)
-            result['volume'] = result['volume'].astype(float)
+            try:
+                result['volume'] = result['volume'].astype(float)
+            except Exception as e:
+                return False
             result['amount'] = result['amount'].astype(float)
             result['turn'] = result['turn'].astype(float)
             result['pctChg'] = result['pctChg'].astype(float)
