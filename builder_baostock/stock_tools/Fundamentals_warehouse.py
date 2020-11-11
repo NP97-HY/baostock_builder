@@ -26,6 +26,7 @@ class fundamentals_warehouse(object):
         liqaShare 	流通股本 	
         """
         data_saver = []
+        #if codelist.
         for stockcode in codelist:
             for r in range(year+1):
                 for qua in range(1,5):
@@ -35,7 +36,6 @@ class fundamentals_warehouse(object):
                     while(rs.error_code == "0") & rs.next():
                         data_saver.append(rs.get_row_data())
                         print(1)
-        data_saver = [i for i in data_saver if i != []]
         result = pd.DataFrame(data_saver, columns=rs.fields)
         if save == True:
             result.to_csv("data_home/profit_data.csv", encoding="gbk", index=False)

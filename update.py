@@ -3,15 +3,27 @@ from talib_builder import talib_builder as tb
 from multiprocessing import Process
 import builder_baostock as bb
 
-def db_updata(stock_list):
+def _db_updata(stock_list):
     dbu = du(stock_list.code,stock_list.type)
     dbu.updata_db_all()
 
 
-def tb_updata(stock_list):
+def _tb_updata(stock_list):
     tbu = tb(stock_list.code,stock_list.type)
     tbu.MACD_build()
 
+
+def updata_stock():
+    my_crl = bb.get_tools()
+    code_pool = my_crl.sc.get_all_code()
+    _db_updata(code_pool)
+
+
+def updata_macd():
+    my_crl = bb.get_tools()
+    code_pool = my_crl.sc.get_all_code()
+    _tb_updata(code_pool)
+    
 
 class Run(Process):
     def __init__(self,stock_list):
@@ -21,9 +33,9 @@ class Run(Process):
 
     def run(self):
         print("start db updata")
-        db_updata(self.stock_list)
+        _db_updata(self.stock_list)
         print("finish stock db  updata")
-        tb_updata(self.stock_list)
+        _tb_updata(self.stock_list)
         print("finish MACD db  updata")
 
 if __name__ == "__main__":
