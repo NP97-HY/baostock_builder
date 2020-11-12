@@ -20,7 +20,6 @@ class talib_builder(object):
 
     
 
-
     def MACD_build(self):
         stocklist = self.stocklist
         stocktype = self.stocktype
@@ -42,7 +41,8 @@ class talib_builder(object):
                 continue
             try:
                 md = pd.read_sql('select * from %s;' % table_name,con = self.engine_MACD)
-                if datetime.strptime(md.date[len(md)-1],'%Y-%m-%d').date() < datetime.strptime(rd.date[len(rd)-1],'%Y-%m-%d').date():
+                if len(rd) > len(md):
+                #datetime.strptime(md.date[len(md)-1],'%Y-%m-%d').date() < datetime.strptime(rd.date[len(rd)-1],'%Y-%m-%d').date():
                     item = len(rd) - len(md)
                     macd['date']=rd.date[len(rd)-item:]
                     macd['code']=rd.code[len(rd)-item:]
@@ -65,7 +65,7 @@ class talib_builder(object):
                 macd['date']=rd.date
                 macd['code']=rd.code
                 macd['EMA12']=talib.EMA(np.array(rd['close']),timeperiod=12)
-                macd['EMA26']=talib.EMA(np.array(rd['close']),timeperiod=24)
+                macd['EMA26']=talib.EMA(np.array(rd['close']),timeperiod=26)
                 macd['DIFF'],macd['DEA'],macd['MACD'] = talib.MACD(np.array(rd['close']),fastperiod=12,
                                                                              slowperiod=26, signalperiod=9)
                 macd['MACD']=macd['MACD']*2

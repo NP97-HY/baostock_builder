@@ -32,8 +32,8 @@ class Run(Process):
 
 
     def run(self):
-        print("start db updata")
-        _db_updata(self.stock_list)
+        # print("start db updata")
+        # _db_updata(self.stock_list)
         print("finish stock db  updata")
         _tb_updata(self.stock_list)
         print("finish MACD db  updata")
