@@ -14,3 +14,12 @@ if __name__ == "__main__":
     #     "医药生物","商业贸易","国防军工","家用电器","建筑材料","房地产","有色金属","机械设备","汽车",
     #     "电子","电气设备","纺织服装","综合","计算机","轻工制造","通信","采掘","钢铁","银行",
     #     "非银金融","食品饮料"
+
+
+    import database_updata as du
+    import builder_baostock as bb
+
+    y=bb.get_tools()
+    u=y.sc.get_all_code()
+    s=du.database_updata(u)
+    s.updata_FW_all()

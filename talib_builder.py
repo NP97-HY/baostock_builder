@@ -9,10 +9,10 @@ from functools import wraps
 
 
 class talib_builder(object):
-    def __init__(self,stocklist,stocktype):
-        self.stocklist = stocklist
-        self.stocktype = stocktype
-        self.first_index = stocklist.index.values
+    def __init__(self,stock):
+        self.stocklist = stock.code
+        self.stocktype = stock.type
+        self.first_index = stock.index.values
         self.engine_daily=DB_stock
         self.engine_MACD=DB_MACD
         self.engine_MA=DB_MA

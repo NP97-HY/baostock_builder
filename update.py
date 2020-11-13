@@ -4,12 +4,12 @@ from multiprocessing import Process
 import builder_baostock as bb
 
 def _db_updata(stock_list):
-    dbu = du(stock_list.code,stock_list.type)
+    dbu = du(stock_list)
     dbu.updata_db_all()
 
 
 def _tb_updata(stock_list):
-    tbu = tb(stock_list.code,stock_list.type)
+    tbu = tb(stock_list)
     tbu.MACD_build()
 
 
@@ -32,8 +32,8 @@ class Run(Process):
 
 
     def run(self):
-        # print("start db updata")
-        # _db_updata(self.stock_list)
+        print("start db updata")
+        _db_updata(self.stock_list)
         print("finish stock db  updata")
         _tb_updata(self.stock_list)
         print("finish MACD db  updata")

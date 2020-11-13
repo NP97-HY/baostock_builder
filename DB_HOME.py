@@ -18,8 +18,12 @@ class DB_HOME(object):
     def DB_MA_build(self):
         return create_engine("mysql://root:1qaz!QAZ@localhost:3306/MA?charset=utf8", max_overflow=5)
 
+    def DB_FW_build(self):
+        return create_engine("mysql://root:1qaz!QAZ@localhost:3306/FW?charset=utf8", max_overflow=5)
+
 DH=DB_HOME()
 DB_stock=DH.DB_stock_build()
 DB_MACD=DH.DB_MACD_build()
 DB_stock_index=DH.DB_stockindex_build()
 DB_MA=DH.DB_MA_build()
+DB_FW=DH.DB_FW_build()
