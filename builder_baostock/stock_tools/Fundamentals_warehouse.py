@@ -50,7 +50,7 @@ class fundamentals_warehouse(object):
         return data_list
 
 
-    def get_operation_data(self,codelist=None,year:int=3,quan:int=None,save=True):
+    def get_operation_data(self,codelist=None,year:int=3,quan:int=None,save=False):
         """
         季频营运能力
         code 	证券代码 	
@@ -63,10 +63,10 @@ class fundamentals_warehouse(object):
         CATurnRatio 	流动资产周转率(次) 	营业总收入/[(期初流动资产+期末流动资产)/2]
         AssetTurnRatio 	总资产周转率 	营业总收入/[(期初资产总额+期末资产总额)/2] 	
         """
-        data_saver = []
+        data_list = {}
         for num in range(len(codelist.code)):
-            if codelist.type[num] == 2 or codelist.type[num] == 3:
-                continue
+            print(codelist[num])
+            data_saver = []
             for r in range(year+1):
                 if quan == None:
                     a=1
@@ -76,18 +76,19 @@ class fundamentals_warehouse(object):
                     b=quan+1
                 for qua in range(a,b):
                     rs = self.bs.query_operation_data(code=codelist.code[num],year=self.year-r,quarter=qua)
-                    while(rs.error_code == "0") and rs.next():
+                    while(rs.error_code == "0") & rs.next():
                         fw_data = rs.get_row_data()
-                        fw_data.YaQ = '%s-%s' % (self.year-r,qua)
+                        fw_data.append('%s-%s' % (self.year+r-year,qua))
                         data_saver.append(fw_data)
-        data_saver = [i for i in data_saver if i != []]
-        result = pd.DataFrame(data_saver, columns=rs.fields)
+            rs.fields.append('YaQ')
+            result = pd.DataFrame(data_saver, columns=rs.fields)
+            data_list[codelist[num]] = result
         if save == True:
             result.to_csv("data_home/operation_data.csv", encoding="gbk", index=False)
-        return result
+        return data_list
 
 
-    def get_growth_data(self,codelist=None,year:int=3,quarter:int=None,save=True):
+    def get_growth_data(self,codelist=None,year:int=3,quan:int=None,save=False):
         """
         季频成长能力
         code 	证券代码 	
@@ -99,23 +100,32 @@ class fundamentals_warehouse(object):
         YOYEPSBasic 	基本每股收益同比增长率 	(本期基本每股收益-上年同期基本每股收益)/上年同期基本每股收益的绝对值*100%
         YOYPNI 	归属母公司股东净利润同比增长率 	(本期归属母公司股东净利润-上年同期归属母公司股东净利润)/上年同期归属母公司股东净利润的绝对值*100% 
         """
-        data_saver = []
+        data_list = {}
         for num in range(len(codelist.code)):
-            if codelist.type[num] == 2 or codelist.type[num] == 3:
-                continue
+            print(codelist[num])
+            data_saver = []
             for r in range(year+1):
-                for qua in range(1,5):
+                if quan == None:
+                    a=1
+                    b=5
+                else:
+                    a=quan
+                    b=quan+1
+                for qua in range(a,b):
                     rs = self.bs.query_growth_data(code=codelist.code[num],year=self.year-r,quarter=qua)
-                    while(rs.error_code == "0") and rs.next():
-                        data_saver.append(rs.get_row_data())
-        data_saver = [i for i in data_saver if i != '']
-        result = pd.DataFrame(data_saver, columns=rs.fields)
+                    while(rs.error_code == "0") & rs.next():
+                        fw_data = rs.get_row_data()
+                        fw_data.append('%s-%s' % (self.year+r-year,qua))
+                        data_saver.append(fw_data)
+            rs.fields.append('YaQ')
+            result = pd.DataFrame(data_saver, columns=rs.fields)
+            data_list[codelist[num]] = result
         if save == True:
             result.to_csv("data_home/growth_data.csv", encoding="gbk", index=False)
-        return result
+        return data_list
 
 
-    def get_balance_data(self,codelist=None,year:int=3,quarter:int=None,save=True):
+    def get_balance_data(self,codelist=None,year:int=3,quan:int=None,save=False):
         """
         季频偿债能力
         code 	证券代码 	
@@ -128,23 +138,32 @@ class fundamentals_warehouse(object):
         liabilityToAsset 	资产负债率 	负债总额/资产总额
         assetToEquity 	权益乘数 	资产总额/股东权益总额=1/(1-资产负债率) 
         """
-        data_saver = []
+        data_list = {}
         for num in range(len(codelist.code)):
-            if codelist.type[num] == 2 or codelist.type[num] == 3:
-                continue
+            print(codelist[num])
+            data_saver = []
             for r in range(year+1):
-                for qua in range(1,5):
+                if quan == None:
+                    a=1
+                    b=5
+                else:
+                    a=quan
+                    b=quan+1
+                for qua in range(a,b):
                     rs = self.bs.query_balance_data(code=codelist.code[num],year=self.year-r,quarter=qua)
-                    while(rs.error_code == "0") and rs.next():
-                        data_saver.append(rs.get_row_data())
-        data_saver = [i for i in data_saver if i != []]
-        result = pd.DataFrame(data_saver, columns=rs.fields)
+                    while(rs.error_code == "0") & rs.next():
+                        fw_data = rs.get_row_data()
+                        fw_data.append('%s-%s' % (self.year+r-year,qua))
+                        data_saver.append(fw_data)
+            rs.fields.append('YaQ')
+            result = pd.DataFrame(data_saver, columns=rs.fields)
+            data_list[codelist[num]] = result
         if save == True:
             result.to_csv("data_home/balance_data.csv", encoding="gbk", index=False)
-        return result 
+        return data_list 
 
 
-    def get_cash_flow_data(self,codelist=None,year:int=3,quarter:int=None,save=True):
+    def get_cash_flow_data(self,codelist=None,year:int=3,quan:int=None,save=False):
         """
         季频现金流量
         code 	证券代码 	
@@ -158,23 +177,32 @@ class fundamentals_warehouse(object):
         CFOToNP 	经营性现金净流量除以净利润 	
         CFOToGr 	经营性现金净流量除以营业总收入 
         """
-        data_saver = []
+        data_list = {}
         for num in range(len(codelist.code)):
-            if codelist.type[num] == 2 or codelist.type[num] == 3:
-                continue
+            print(codelist[num])
+            data_saver = []
             for r in range(year+1):
-                for qua in range(1,5):
+                if quan == None:
+                    a=1
+                    b=5
+                else:
+                    a=quan
+                    b=quan+1
+                for qua in range(a,b):
                     rs = self.bs.query_cash_flow_data(code=codelist.code[num],year=self.year-r,quarter=qua)
-                    while(rs.error_code == "0") and rs.next():
-                        data_saver.append(rs.get_row_data())
-        data_saver = [i for i in data_saver if i != []]
-        result = pd.DataFrame(data_saver, columns=rs.fields)
+                    while(rs.error_code == "0") & rs.next():
+                        fw_data = rs.get_row_data()
+                        fw_data.append('%s-%s' % (self.year+r-year,qua))
+                        data_saver.append(fw_data)
+            rs.fields.append('YaQ')
+            result = pd.DataFrame(data_saver, columns=rs.fields)
+            data_list[codelist[num]] = result
         if save == True:
             result.to_csv("data_home/cash_flow_data.csv", encoding="gbk", index=False)
-        return result 
+        return data_list 
 
 
-    def get_dupont_data(self,codelist=None,year:int=3,quarter:int=None,save=True):
+    def get_dupont_data(self,codelist=None,year:int=3,quan:int=None,save=False):
         """
         季频杜邦指数
         code 	证券代码 	
@@ -189,23 +217,32 @@ class fundamentals_warehouse(object):
         dupontIntburden 	利润总额/息税前利润，反映企业利息负担，该比值高则税负较低。利润总额/息税前利润=1-利息费用/息税前利润
         dupontEbittogr 	息税前利润/营业总收入，反映企业经营利润率，是企业经营获得的可供全体投资人（股东和债权人）分配的盈利占企业全部营收收入的百分比 	
         """
-        data_saver = []
+        data_list = {}
         for num in range(len(codelist.code)):
-            if codelist.type[num] == 2 or codelist.type[num] == 3:
-                continue
+            print(codelist[num])
+            data_saver = []
             for r in range(year+1):
-                for qua in range(1,5):
+                if quan == None:
+                    a=1
+                    b=5
+                else:
+                    a=quan
+                    b=quan+1
+                for qua in range(a,b):
                     rs = self.bs.query_dupont_data(code=codelist.code[num],year=self.year-r,quarter=qua)
-                    while(rs.error_code == "0") and rs.next():
-                        data_saver.append(rs.get_row_data())
-        data_saver = [i for i in data_saver if i != []]
-        result = pd.DataFrame(data_saver, columns=rs.fields)
+                    while(rs.error_code == "0") & rs.next():
+                        fw_data = rs.get_row_data()
+                        fw_data.append('%s-%s' % (self.year+r-year,qua))
+                        data_saver.append(fw_data)
+            rs.fields.append('YaQ')
+            result = pd.DataFrame(data_saver, columns=rs.fields)
+            data_list[codelist[num]] = result
         if save == True:
             result.to_csv("data_home/dupont_data.csv", encoding="gbk", index=False)
-        return result 
+        return data_list 
 
 
-    def get_performance_express_report(self,codelist=None,year:int=3,quarter:int=None,save=True):
+    def get_performance_express_report(self,codelist=None,year:int=3,quan:int=None,save=False):
         """
         季频业绩快报
         code 	证券代码
@@ -220,23 +257,32 @@ class fundamentals_warehouse(object):
         performanceExpressGRYOY 	业绩快报营业总收入同比
         performanceExpressOPYOY 	业绩快报营业利润同比 	
         """
-        data_saver = []
+        data_list = {}
         for num in range(len(codelist.code)):
-            if codelist.type[num] == 2 or codelist.type[num] == 3:
-                continue
+            print(codelist[num])
+            data_saver = []
             for r in range(year+1):
-                for qua in range(1,5):
+                if quan == None:
+                    a=1
+                    b=5
+                else:
+                    a=quan
+                    b=quan+1
+                for qua in range(a,b):
                     rs = self.bs.query_performance_express_report(code=codelist.code[num],year=self.year-r,quarter=qua)
-                    while(rs.error_code == "0") and rs.next():
-                        data_saver.append(rs.get_row_data())
-        data_saver = [i for i in data_saver if i != []]
-        result = pd.DataFrame(data_saver, columns=rs.fields)
+                    while(rs.error_code == "0") & rs.next():
+                        fw_data = rs.get_row_data()
+                        fw_data.append('%s-%s' % (self.year+r-year,qua))
+                        data_saver.append(fw_data)
+            rs.fields.append('YaQ')
+            result = pd.DataFrame(data_saver, columns=rs.fields)
+            data_list[codelist[num]] = result
         if save == True:
             result.to_csv("data_home/performance_express_report.csv", encoding="gbk", index=False)
-        return result 
+        return data_list 
 
 
-    def get_forcast_report(self,codelist=None,save=True):
+    def get_forcast_report(self,codelist=None,save=False):
         """
         季频业绩预告
         code 	证券代码
