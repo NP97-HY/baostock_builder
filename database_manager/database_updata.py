@@ -1,6 +1,6 @@
 import builder_baostock as bb
 import pandas as pd
-from DB_HOME import DB_stock,DB_stock_index,DB_FW
+from database_manager.DB_HOME import DB_stock,DB_stock_index,DB_FW
 from datetime import datetime, date, timedelta
 import sqlalchemy
 import time
@@ -68,7 +68,7 @@ class database_updata(object):
                 print(codelist[num]+"保存数据失败") 
 
 
-    def updata_FW_all(self):
+    def updata_FW_profit(self):
         codelist = self.stocklist
         stocktype = self.stocktype
         status = self.stockstatus
@@ -102,3 +102,4 @@ class database_updata(object):
                                                 if_exists='append',index=False)
             except Exception:
                 print(codelist[num]+"保存数据失败") 
+                

@@ -1,5 +1,5 @@
-from database_updata import database_updata as du
-from talib_builder import talib_builder as tb
+from database_manager.database_updata import database_updata as du
+from database_manager.talib_builder import talib_builder as tb
 from multiprocessing import Process
 import builder_baostock as bb
 
