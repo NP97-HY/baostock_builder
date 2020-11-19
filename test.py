@@ -16,10 +16,10 @@ if __name__ == "__main__":
     #     "非银金融","食品饮料"
 
 
-    import database_updata as du
-    import builder_baostock as bb
+    # import database_updata as du
+    # import builder_baostock as bb
 
-    y=bb.get_tools()
-    u=y.sc.get_all_code()
-    s=du.database_updata(u)
-    s.updata_FW_all()
+    # y=bb.get_tools()
+    # u=y.sc.get_all_code()
+    # s=du.database_updata(u)
+    # s.updata_FW_all()

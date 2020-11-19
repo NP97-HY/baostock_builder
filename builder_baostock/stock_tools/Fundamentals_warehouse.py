@@ -2,11 +2,36 @@ import pandas as pd
 import time
 
 
+
+
 class fundamentals_warehouse(object):
     def __init__(self,bs):
         self.bs = bs
         self.my_time = time.localtime(time.time())
         self.year = self.my_time.tm_year
+
+
+    def all_data(self,fun):
+        from builder_baostock.stock_tools.stock_catcher import stock_catcher as sc
+        def wrap(b):
+            data_list = {}
+            codelist = sc(self.bs).get_all_code().code
+            for num in range(len(codelist)):
+                #print(codelist[num])
+                data_saver = []
+                for r in range(b):
+                    for qua in range(1,5):
+                        rs = fun(self,stockname=codelist[num],year=self.year+r-b,qua=qua)
+                        while(rs.error_code == "0") & rs.next():
+                            fw_data = rs.get_row_data()
+                            fw_data.append('%s-%s' % (b+r-b,qua))
+                            data_saver.append(fw_data)
+                rs.fields.append('YaQ')
+                result = pd.DataFrame(data_saver, columns=rs.fields)
+                data_list[codelist[num]] = result
+            return data_list
+        return wrap
+
 
 
     
@@ -304,3 +329,7 @@ class fundamentals_warehouse(object):
         if save == True:
             result.to_csv("data_home/forcast_report.csv", encoding="gbk", index=False)
         return result 
+
+
+
+

@@ -20,14 +20,31 @@ class tools(object):
 
 def get_tools(ty=None):
     if ty == "sc":
+        lg = bs.login()
+        if lg.error_code != "0":
+            print("LOGIN FAILED:"+lg.error_msg)
         return stock_catcher(bs)
     if ty == "mdw":
+        lg = bs.login()
+        if lg.error_code != "0":
+            print("LOGIN FAILED:"+lg.error_msg)
         return macroeconomic_Data_Warehouse(bs)
     if ty == "ic":
+        lg = bs.login()
+        if lg.error_code != "0":
+            print("LOGIN FAILED:"+lg.error_msg)
         return indexs_component(bs)
     if ty == "dw":
+        lg = bs.login()
+        if lg.error_code != "0":
+            print("LOGIN FAILED:"+lg.error_msg)
         return data_Warehouse(bs)
     if ty == "fw":
+        lg = bs.login()
+        if lg.error_code != "0":
+            print("LOGIN FAILED:"+lg.error_msg)
         return fundamentals_warehouse(bs)
     if ty == None:
         return tools()
+
+

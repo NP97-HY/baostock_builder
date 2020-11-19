@@ -2,7 +2,7 @@ import pandas as pd
 from Data_cather import data_catcher as dc
 from sqlalchemy import create_engine
 from numpy import *
-from DB_HOME import DB_stock
+from database_manager.DB_HOME import DB_stock
 import matplotlib.pyplot as plt
 import matplotlib
 

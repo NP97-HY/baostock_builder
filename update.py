@@ -1,6 +1,7 @@
 from database_manager.database_updata import database_updata as du
 from database_manager.talib_builder import talib_builder as tb
 from multiprocessing import Process
+from database_manager.DB_HOME import DB_SL
 import builder_baostock as bb
 
 def _db_updata(stock_list):
@@ -41,6 +42,7 @@ class Run(Process):
 if __name__ == "__main__":
     my_crl = bb.get_tools()
     code_pool = my_crl.sc.get_all_code()
+    code_pool.to_sql(name='stocklist',con=DB_SL,if_exists='replace',index=False)
     half = len(code_pool)/2
     stocklist_1 = code_pool[:int(half/2)]
     stocklist_2 = code_pool[int(half/2)+1:int(half)]

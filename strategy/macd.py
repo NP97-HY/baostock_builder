@@ -88,4 +88,4 @@ class macd(object):
                 stock_pool[stocklist.code[crl]] = stocklist.code[crl]
                 if stocklist.type[crl] == '1':
                     print(stocklist.code[crl]+'符合条件')
-        stock_pool.to_csv("data_home/%s_macd_double.csv" % str(datetime.now().date()))
+        stock_pool.to_csv("data_home/%s_macd_double_n0.csv" % str(datetime.now().date()))
