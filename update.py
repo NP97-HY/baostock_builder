@@ -47,7 +47,7 @@ if __name__ == "__main__":
     stocklist_1 = code_pool[:int(half/2)]
     stocklist_2 = code_pool[int(half/2)+1:int(half)]
     stocklist_3 = code_pool[int(half)+1:int(half*3/2)]
-    stocklist_4 = code_pool[int(half*3/2):]
+    stocklist_4 = code_pool[int(half*3/2)+1:]
     p1 = Run(stocklist_1)
     p2 = Run(stocklist_2)
     p3 = Run(stocklist_3)

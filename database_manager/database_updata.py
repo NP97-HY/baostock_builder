@@ -87,19 +87,20 @@ class database_updata(object):
                 continue
             try:
                 rd = pd.read_sql('select * from %s;' % table_name,con = engine_X)
-                if rd != 0 :
-                    print(status[num])
-                    ymd = rd.YaQ[-1].split("-")
-                    diff_year = time.localtime(time.time()).tm_year - ymd[0]
-                    if ymd[1]<4:
+                if rd.empty:
+                    raise sqlalchemy.exc.ProgrammingError(statement=1, params=1, orig=1)
+                else:
+                    print(rd.YaQ[len(rd)-1])
+                    ymd = rd.YaQ[len(rd)-1].split("-")
+                    diff_year = time.localtime(time.time()).tm_year - int(ymd[0])
+                    if int(ymd[1])<3:   #4
                         next_qua = ymd[1]+1
                     elif diff_year == 0:
+                        print('1')
                         continue
                     else:
                         next_qua = 1
                     result = fw_interface.profit_data([codelist[num]],diff_year,next_qua)
-                else:
-                    raise sqlalchemy.exc.ProgrammingError(statement=1, params=1, orig=1)
             except sqlalchemy.exc.ProgrammingError:
                 result = fw_interface.profit_data([codelist[num]])
             try:
