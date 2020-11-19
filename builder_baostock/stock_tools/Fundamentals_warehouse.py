@@ -12,20 +12,28 @@ class fundamentals_warehouse(object):
 
 
     def all_data(self,fun):
-        from builder_baostock.stock_tools.stock_catcher import stock_catcher as sc
-        def wrap(b):
+        #from builder_baostock.stock_tools.stock_catcher import stock_catcher as sc
+        def wrap(mycode,b=3,c=1):
             data_list = {}
-            codelist = sc(self.bs).get_all_code().code
+            codelist = mycode
+            #sc(self.bs).get_all_code().code
             for num in range(len(codelist)):
-                #print(codelist[num])
+                print(codelist[num])
                 data_saver = []
                 for r in range(b):
-                    for qua in range(1,5):
-                        rs = fun(self,stockname=codelist[num],year=self.year+r-b,qua=qua)
+                    if r==0 and c>0 and c<=4:
+                        a=c
+                        s=5
+                    else:
+                        a=1
+                        s=5
+                    for qua in range(a,s):
+                        rs = fun(self,stockname=codelist[num],year=self.year+r-b+1,qua=qua)
                         while(rs.error_code == "0") & rs.next():
                             fw_data = rs.get_row_data()
-                            fw_data.append('%s-%s' % (b+r-b,qua))
+                            fw_data.append('%s-%s' % (self.year+r-b+1,qua))
                             data_saver.append(fw_data)
+                        #print(data_saver)
                 rs.fields.append('YaQ')
                 result = pd.DataFrame(data_saver, columns=rs.fields)
                 data_list[codelist[num]] = result
@@ -55,12 +63,12 @@ class fundamentals_warehouse(object):
             print(codelist[num])
             data_saver = []
             for r in range(year+1):
-                if quan == None:
-                    a=1
+                if r==0 and quan>0 and quan<=4:
+                    a=quan
                     b=5
                 else:
-                    a=quan
-                    b=quan+1
+                    a=1
+                    b=5
                 for qua in range(a,b):
                     rs = self.bs.query_profit_data(code=codelist[num],year=self.year+r-year,quarter=qua)
                     while(rs.error_code == "0") & rs.next():

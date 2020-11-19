@@ -69,6 +69,7 @@ class database_updata(object):
 
 
     def updata_FW_profit(self):
+        from interface import fw_interface
         codelist = self.stocklist
         stocktype = self.stocktype
         status = self.stockstatus
@@ -92,11 +93,15 @@ class database_updata(object):
                     diff_year = time.localtime(time.time()).tm_year - ymd[0]
                     if ymd[1]<4:
                         next_qua = ymd[1]+1
-                    result = self.tools.fw.get_profit_data(codelist=[codelist[num]],year=diff_year,quarter=next_qua)
+                    elif diff_year == 0:
+                        continue
+                    else:
+                        next_qua = 1
+                    result = fw_interface.profit_data([codelist[num]],diff_year,next_qua)
                 else:
                     raise sqlalchemy.exc.ProgrammingError(statement=1, params=1, orig=1)
             except sqlalchemy.exc.ProgrammingError:
-                result = self.tools.fw.get_profit_data(codelist=[codelist[num]])
+                result = fw_interface.profit_data([codelist[num]])
             try:
                 result[codelist[num]].to_sql(name=table_name,con=engine_X,
                                                 if_exists='append',index=False)
