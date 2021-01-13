@@ -1,18 +1,19 @@
 from database_manager.database_updata import database_updata as du
 from database_manager.talib_builder import talib_builder as tb
 from multiprocessing import Process
-import builder_baostock as bb
+#import builder_baostock as bb
+from database_manager.DB_HOME import DB_SL
+import pandas as pd
 
 def _db_updata(stock_list):
     dbu = du(stock_list)
+    # dbu.updata_FW_growth()
     dbu.updata_FW_profit()
+    # dbu.updata_FW_operation()
+    # dbu.updata_FW_balance()
+    # dbu.updata_FW_cash_flow()
+    # dbu.updata_FW_dupont()
 
-
-
-def updata_stock():
-    my_crl = bb.get_tools()
-    code_pool = my_crl.sc.get_all_code()
-    _db_updata(code_pool)
 
 
     
@@ -29,9 +30,9 @@ class Run(Process):
         print("finish stock db  updata")
 
 if __name__ == "__main__":
-    my_crl = bb.get_tools()
-    code_pool = my_crl.sc.get_all_code()
-    code_pool = code_pool[220:len(code_pool)-350]
+    #my_crl = bb.get_tools()
+    code_pool = pd.read_sql('select * from stocklist;',con = DB_SL)
+    #code_pool=code_pool[3000:3400]
     half = len(code_pool)/2
     stocklist_1 = code_pool[:int(half/4)]
     stocklist_2 = code_pool[int(half/4)+1:int(half/2)]

@@ -13,7 +13,7 @@ class fundamentals_warehouse(object):
 
     def all_data(self,fun):
         #from builder_baostock.stock_tools.stock_catcher import stock_catcher as sc
-        def wrap(mycode,b=3,c=1):
+        def wrap(mycode,b=10,c=1):
             data_list = {}
             codelist = mycode
             #sc(self.bs).get_all_code().code
@@ -28,14 +28,17 @@ class fundamentals_warehouse(object):
                         a=1
                         s=5
                     for qua in range(a,s):
-                        rs = fun(self,stockname=codelist[num],year=self.year+r-b+1,qua=qua)
-                        while(rs.error_code == "0") & rs.next():
-                            fw_data = rs.get_row_data()
+                        rr = fun(self,stockname=codelist[num],year=self.year+r-b+1,qua=qua)
+                        while(rr.error_code == "0") & rr.next():
+                            fw_data = rr.get_row_data()
                             fw_data.append('%s-%s' % (self.year+r-b+1,qua))
                             data_saver.append(fw_data)
                         #print(data_saver)
-                rs.fields.append('YaQ')
-                result = pd.DataFrame(data_saver, columns=rs.fields)
+                try:
+                    rr.fields.append('YaQ')
+                except Exception:
+                    continue
+                result = pd.DataFrame(data_saver, columns=rr.fields)
                 data_list[codelist[num]] = result
             return data_list
         return wrap

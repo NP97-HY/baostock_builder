@@ -46,18 +46,16 @@ class talib_builder(object):
                     item = len(rd) - len(md)
                     macd['date']=rd.date[len(rd)-item:]
                     macd['code']=rd.code[len(rd)-item:]
-                    macd['EMA12']=md.EMA12[len(md)-1]*11/13+rd.close[len(md)]*2/13
-                    macd['EMA26']=md.EMA26[len(md)-1]*25/27+rd.close[len(md)]*2/27
-                    macd['DIFF']=macd['EMA12']-macd['EMA26']
-                    macd['DEA']=md['DEA'][len(md)-1]*0.8+macd['DIFF']*0.2
-                    macd['MACD']=(macd['DIFF']-macd['DEA'])*2
-                    while item>1:
-                        macd['EMA12'][len(macd.date)-item+1]=macd['EMA12'][len(macd.date)-item]*11/13+rd.close[len(rd)-item+1]*2/13
-                        macd['EMA26'][len(macd.date)-item+1]=macd['EMA26'][len(macd.date)-item]*11/13+rd.close[len(rd)-item+1]*2/13
-                        macd['DIFF'][len(macd.date)-item+1]=macd['EMA12'][len(macd.date)-item+1]-macd['EMA26'][len(macd.date)-item+1]
-                        macd['DEA'][len(macd.date)-item+1]=macd['DEA'][len(macd.date)-item+1]*0.8+macd['DIFF'][len(macd.date)-item+1]*0.2
-                        macd['MACD'][len(macd.date)-item+1]=(macd['DIFF'][len(macd.date)-item+1]-macd['DEA'][len(macd.date)-item+1])*2
-                        item -= 1
+                    macd['EMA12']=talib.EMA(np.array(rd.close[len(rd)-item-30:]),timeperiod=12)[-item:]
+                    macd['EMA26']=talib.EMA(np.array(rd.close[len(rd)-item-30:]),timeperiod=26)[-item:]
+                    a,b,c = talib.MACD(np.array(rd.close[len(rd)-item-50:]),fastperiod=12,
+                                                                             slowperiod=26, signalperiod=9)
+                    macd['DIFF']=a[-item:]
+                    macd['DEA']=b[-item:]
+                    macd['MACD']=c[-item:]
+                    # macd['DIFF']=macd['EMA12']-macd['EMA26']
+                    # macd['DEA']=md['DEA'][len(md)-1]*0.8+macd['DIFF']*0.2
+                    # macd['MACD']=(macd['DIFF']-macd['DEA'])*2
                 else:
                     print(stocklist[num]+"已是最新日期")
                     continue

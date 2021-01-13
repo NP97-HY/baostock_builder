@@ -28,7 +28,7 @@ class macd(object):
                 print(table_name+"type=3")
                 continue
             try:
-                md = pd.read_sql('select * from %s order by date desc limit 15;' % table_name,con = self.engine_MACD)
+                md = pd.read_sql('select * from %s order by date desc limit 20;' % table_name,con = self.engine_MACD)
             except Exception:
                 continue
             num = 0
@@ -45,7 +45,7 @@ class macd(object):
                         end_close = rd.close[0]
                         last_date=datetime.strptime(md.date[i-1],'%Y-%m-%d').date()
                         #print(last_date)
-            if num>=2 and (date.today()-last_date).days<=2 and ((first_close-end_close)/first_close).astype('float')<0.05: #
+            if num>=2 and (date.today()-last_date).days<=3 and ((first_close-end_close)/first_close).astype('float')<0.1: #
                 stock_pool[stocklist.code[crl]] = stocklist.code[crl]
                 if stocklist.type[crl] == '1':
                     print(stocklist.code[crl]+'符合条件')
@@ -67,7 +67,7 @@ class macd(object):
                 print(table_name+"type=3")
                 continue
             try:
-                md = pd.read_sql('select * from %s order by date desc limit 15;' % table_name,con = self.engine_MACD)
+                md = pd.read_sql('select * from %s order by date desc limit 20;' % table_name,con = self.engine_MACD)
             except Exception:
                 continue
             num = 0
@@ -84,7 +84,7 @@ class macd(object):
                         end_close = rd.close[0]
                         last_date=datetime.strptime(md.date[i-1],'%Y-%m-%d').date()
                         #print(last_date)
-            if num>=2 and (date.today()-last_date).days<=2 and ((first_close-end_close)/first_close).astype('float')<0.05: #
+            if num>=2 and (date.today()-last_date).days<=3 and ((first_close-end_close)/first_close).astype('float')<0.1: #
                 stock_pool[stocklist.code[crl]] = stocklist.code[crl]
                 if stocklist.type[crl] == '1':
                     print(stocklist.code[crl]+'符合条件')

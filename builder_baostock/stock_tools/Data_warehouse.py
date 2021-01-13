@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import time
 
 
@@ -11,7 +12,7 @@ class data_Warehouse(object):
         self.bs = bs
 
 
-    def get_data(self,date="1",start_date:str=None,start_date_year:int=2,start_date_month:int=0,
+    def get_data(self,date="1",start_date:str=None,start_date_year:int=30,start_date_month:int=0,
                 frequency="d",adjustflag="2",stocklist=None,save=False):
         if date == "1":
             self.my_time = time.localtime(time.time())
@@ -67,6 +68,7 @@ class data_Warehouse(object):
                 datalist.append(rs.get_row_data())
             result = pd.DataFrame(datalist, columns=rs.fields)
             result = result[result["tradestatus"]=="1"]
+                
             result['open'] = result['open'].astype(float)
             result['high'] = result['high'].astype(float)
             result['low'] = result['low'].astype(float)
@@ -76,9 +78,9 @@ class data_Warehouse(object):
                 result['volume'] = result['volume'].astype(float)
             except Exception:
                 return False
-            result['amount'] = result['amount'].astype(float)
-            result['turn'] = result['turn'].astype(float)
-            result['pctChg'] = result['pctChg'].astype(float)
+            result['amount'] = result['amount'].replace('',0).astype(float)
+            result['turn'] = result['turn'].replace('',0).astype(float)
+            result['pctChg'] = result['pctChg'].replace('',0).astype(float)
             stock_data_list[targetStock] = result
             result = pd.DataFrame(result, columns=rs.fields)
             print(targetStock+"  finish")
